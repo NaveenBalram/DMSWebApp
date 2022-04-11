@@ -1,0 +1,119 @@
+@import '../../assets/scss/shared';
+
+.container {
+  //padding: 100px 10px 25px 10px;
+  // min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background:url("../../assets/img/help_desk.jpg") no-repeat center center/cover;
+  min-height: calc( 100vh - 65px );
+  margin-top: 65px;
+}
+.overlayBlock{
+  width: 500px;
+  padding: 20px;
+  background-color: #1119;
+  color: $color-white;
+  position: absolute;
+  top: 30%;
+  right: 10%;
+  border-radius: 10px;
+  & h1{
+    font-weight: $font-weight-light;
+  }
+}
+
+.darkContainer {
+  background-color: $color-black;
+}
+
+@media (max-width: $breakpoint-medium) {
+  .textSection {
+    font-size: $font-size-largest !important;
+  }
+}
+
+@media (max-width: $breakpoint-smaller) {
+  .heroText {
+    font-size: $font-size-hero-l !important;
+    font-weight: $font-weight-light !important;
+    margin: 0px 10px;
+  }
+
+  .heroSubText {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+    margin: 0px 10px;
+  }
+
+  .textSection {
+    font-size: $font-size-large !important;
+    font-weight: $font-weight-light !important;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: $breakpoint-large) {
+  .heroText {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .heroSubText {
+    font-size: $font-size-small !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .textSection {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .chevron {
+    animation: pulseHalf 2s infinite !important;
+  }
+}
+
+.heroTextl {
+  color: $color-primary;
+  font-size: $font-size-hero-xl;
+  font-weight: $font-weight-light;
+}
+
+
+.heroText {
+  color: $color-primary;
+  font-size: $font-size-hero-l;
+  font-weight: $font-weight-light;
+}
+
+.heroSubText {
+  color: $color-primary;
+  font-size: $font-size-large;
+  font-weight: $font-weight-light;
+}
+
+.nextButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.next {
+  width: 250px;
+}
+
+.link {
+  font-weight: $font-weight-bold;
+}
+
+@media only screen and (min-width:$breakpoint-xsmaller) and (max-width:$breakpoint-small){
+  .overlayBlock{
+    position: relative;
+    margin: 20px;
+    width: 100%;
+    top: auto;
+    right: 0;
+  }
+}

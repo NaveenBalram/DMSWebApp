@@ -1,0 +1,149 @@
+@import "../../assets/scss/shared";
+
+.container {
+    justify-content: center;
+    align-items: center;
+}
+
+.gap {
+    margin-top: 25px;
+}
+.bottomRowContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    width: 1200px;
+    height: 50px;
+    align-items: center;
+}
+
+.text {
+    flex: 1;
+    font-weight: 500;
+    color: #585858;
+}
+
+.inputTextContainer {
+    display: flex;
+    flex: 2;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 40px;
+}
+
+.inputText {
+    width: 750px;
+    height: 35px;
+    border: 1.5px solid rgba(0, 0, 255, 0.25);
+}
+
+.inputDropdown {
+    width: 755px;
+    height: 35px;
+    padding-right: 6px;
+}
+
+.inputCheckBox {
+    width: 755px;
+    height: 35px;
+    padding-right: 6px;
+    margin-top: -10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.inputDateContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.inputDate {
+    width: 200;
+    height: 35px;
+    margin-left: 15px;
+    border: 1.5px solid rgba(0, 0, 255, 0.25);
+}
+
+.customText {
+    height: 40px;
+    font-size: $font-size-large;
+    color: $color-black;
+    width: 100%;
+    min-width: 247px;
+}
+
+.buttonContainer {
+    display: flex;
+    //flex: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 15px;
+}
+
+.buttonStyle {
+    background-color: #f58220;
+    color: $color-white !important;
+    width: 100px;
+    height: 45px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 15px;
+    &:hover {
+        transition-duration: 500ms;
+        box-shadow: 0 -3px 18px 0 #016936;
+        background-color: #016936;
+    }
+}
+
+.customText {
+    height: 40px;
+    font-size: $font-size-large;
+    color: $color-black;
+    width: 100%;
+    min-width: 300px;
+}
+
+.customDropdown {
+    min-width: 350px !important;
+}
+
+.label {
+    height: 19px !important;
+    margin: 0;
+    margin-bottom: 5px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin:20px;
+}
+
+.cancelBtn {
+    font-size: 22px;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top:-11px;
+    text-align: left;
+  }
+  
+  .nextButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    align-content: center;
+    align-self: center;
+    align-content: center;
+    flex-wrap: nowrap;
+  }

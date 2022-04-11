@@ -1,0 +1,128 @@
+@import "../../assets/scss/shared.scss";
+
+.productListContainer {
+  margin-top: 65px;
+  min-height: calc(100vh - 65px);
+  padding: 2% 0%;
+}
+.heading {
+  margin: 0px 15%;
+  text-align: center;
+  padding-top: 40px;
+  color: $color-primary;
+  & h1 {
+    font-weight: $font-weight-thin;
+    font-size: $font-size-largest-l;
+  }
+}
+.subHeading {
+  & h2 {
+    color: $color-primary !important;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-largest;
+  }
+  & h4 {
+    color: $color-primary-dark !important;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-large;
+  }
+}
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin: $padding-small 0px;
+  & button:first-child {
+    margin-right: $padding-large;
+  }
+  & button:hover {
+    transform: scale(1.2);
+  }
+
+}
+.buttonStyle {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+  width:318px;
+}
+.productArray {
+ // padding: 2% 6%;
+  text-align: center;
+  & h2,
+  h4 {
+    color: $color-black;
+    font-weight: $font-weight-light;
+  }
+}
+.productIndividual {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  transition: height 0.5s ease-in;
+  overflow: hidden;
+}
+.viewMoreButton {
+  margin-top: $padding-medium;
+}
+
+.scrollOverlayContainer {
+  position: absolute;
+  //bottom: 0%;
+  left: 5%;
+  right: 5%;
+}
+
+.scrollOverlay {
+  display: flex;
+  flex-direction: column;
+}
+
+.textScroll {
+  position: relative;
+  margin: 0 auto 0 auto;
+  color: $color-primary;
+  bottom: 0;
+  font-weight: $font-weight-bold;
+}
+
+.chevron {
+  display: block;
+  animation: pulse 2s infinite;
+  color: $color-primary;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.chevron::before {
+    border-style: solid;
+    border-width: 0.25em 0.25em 0 0;
+    content: '';
+    display: inline-block;
+    height: 20px;
+    position: relative;
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
+    vertical-align: top;
+    width: 20px;
+  }
+
+@media only screen and (min-width: $breakpoint-xsmaller) and (max-width: $breakpoint-small) {
+  .heading {
+    margin: 0 4%;
+    & h1 {
+      font-size: $font-size-large;
+    }
+  }
+  .buttonContainer {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & button:first-child {
+      margin-bottom: 20px;
+      margin-right: 0;
+    }
+  }
+}

@@ -1,0 +1,172 @@
+@import '../../assets/scss/shared';
+
+.primaryContainer {
+  margin-top: 0;
+  background: url('../../assets/img/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.heroImage {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+}
+
+.heroImageOverlay {
+  padding: 15px;
+  background: transparentize($color-white,0.05);
+  box-shadow: 0 5px 15px 0 #b6b6b6;
+  border-radius: 6px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  // margin-right: 20%;
+}
+
+@media (max-width: $breakpoint-medium) {
+  .textSection {
+    font-size: $font-size-largest !important;
+  }
+  .heroImage {
+    height: 125vh;
+    width: 100vw;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: $breakpoint-smaller) {
+  .heroSubText {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .textSection {
+    font-size: $font-size-large !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .heroImageOverlay {
+    padding: 15px;
+    background: transparentize($color-white, 0.1);
+    box-shadow: 0 5px 15px 0 #b6b6b6;
+    border-radius: 6px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: $breakpoint-large) {
+  .heroSubText {
+    font-size: $font-size-small !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .textSection {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .heroImageOverlay {
+    padding: 15px;
+    background: transparentize($color-white, 0.1);
+    box-shadow: 0 5px 15px 0 #b6b6b6;
+    border-radius: 6px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.heroText {
+  color: #f78022;
+  font-size: $font-size-hero-l;
+  font-weight: $font-weight-light;
+}
+
+.overlayTextContent {
+  color: $color-green;
+  font-size:$font-size-medium;
+  font-weight:$font-weight-normal
+}
+
+.link {
+  font-weight: $font-weight-bold;
+}
+
+.nextButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.next {
+  width: 250px;
+}
+
+.signInContent{
+    padding: 15px;
+    border-radius: 6px;
+    width: 600px;
+    color: $color-white;
+    align-self: baseline;
+    margin-top: 10%;
+    background-color:#11111152;
+    & h2{
+      font-size: $font-size-hero-l;
+      font-weight: $font-weight-normal;
+      margin-bottom: $padding-small;
+    }
+    & p{
+      font-size: $font-size-medium;
+    }
+}
+
+@media only screen and (min-width:$breakpoint-xsmaller) and (max-width:$breakpoint-medium-large){
+  .heroImage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .signInContent{
+    align-self: center;
+    margin-top: 0;
+  }
+  .heroImageOverlay{
+    margin-right: 0;
+  }
+}
+
+@media only screen and (min-width:$breakpoint-xsmaller) and (max-width:$breakpoint-small){
+  .signInContent{
+    width: fit-content;
+  }
+  .heroImage{
+    background: none;
+  }
+}
+
+.logoContainer{
+  margin: 20px 0 30px 0;
+  display: block;
+  & img{
+      height: 60px;
+      width:200px;
+      //margin: 0 15px;
+  }
+}

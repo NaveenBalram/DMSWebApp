@@ -1,0 +1,266 @@
+@import "../../assets/scss/shared";
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  background: url("../../assets/img/Aflac-connect-contactUs.png") no-repeat
+    center center/cover;
+  min-height: calc(100vh - 65px);
+  margin-top: 65px;
+}
+
+.overlayBlock {
+  width: 750px;
+  padding: 20px;
+  background-color: #11111185;
+  color: #fff;
+  top: 20%;
+  border-radius: 10px;
+  margin-top: 6%;
+  margin-left: 4%;
+  box-shadow: 0px 3px 15px 0px #019dd57d;
+  & h1 {
+    font-weight: $font-weight-light;
+    font-size: $font-size-hero-l !important;
+  }
+  & h2 {
+    font-weight: $font-weight-light;
+  }
+}
+.bannerHeading {
+  font-size: $font-size-largest;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: lighter;
+}
+.bannerContent {
+  font-size: $font-size-large;
+  margin-top: 0;
+}
+.linkFlex {
+  display: flex;
+  color: $color-white;
+  justify-content: space-between;
+}
+.signUpItem {
+  & a {
+    font-weight: bold;
+  }
+}
+
+.darkContainer {
+  background-color: $color-black;
+}
+
+@media (max-width: $breakpoint-medium) {
+  .textSection {
+    font-size: $font-size-largest !important;
+  }
+}
+
+@media (max-width: $breakpoint-smaller) {
+  .heroText {
+    font-size: $font-size-hero-l !important;
+    font-weight: $font-weight-light !important;
+    margin: 0px 10px;
+  }
+
+  .heroSubText {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+    margin: 0px 10px;
+  }
+
+  .textSection {
+    font-size: $font-size-large !important;
+    font-weight: $font-weight-light !important;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: $breakpoint-large) {
+  .heroText {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .heroSubText {
+    font-size: $font-size-small !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .textSection {
+    font-size: $font-size-medium !important;
+    font-weight: $font-weight-light !important;
+  }
+
+  .chevron {
+    animation: pulseHalf 2s infinite !important;
+  }
+}
+
+.heroTextl {
+  color: $color-primary;
+  font-size: $font-size-hero-xl;
+  font-weight: $font-weight-light;
+}
+
+.heroText {
+  color: $color-primary;
+  font-size: $font-size-hero-l;
+  font-weight: $font-weight-light;
+}
+
+.heroSubText {
+  color: $color-primary;
+  font-size: $font-size-large;
+  font-weight: $font-weight-light;
+}
+
+.nextButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.next {
+  width: 250px;
+}
+
+.link {
+  font-weight: $font-weight-bold;
+}
+
+@media only screen and (min-width: $breakpoint-xsmaller) and (max-width: $breakpoint-small) {
+  .bannerHeading {
+    font-size: $font-size-larger;
+  }
+  .bannerContent {
+    font-size: $font-size-small;
+  }
+  .linkFlex {
+    display: block;
+  }
+  .overlayBlock {
+    position: relative;
+    margin: 20px;
+    width: 80%;
+    & h1 {
+      font-weight: $font-weight-light;
+      font-size: $font-size-larger !important;
+    }
+  }
+  .container {
+    background: url("../../assets/img/Aflac_connect_contactUs_750mobile.jpg")
+      no-repeat center center/cover;
+    justify-content: flex-start;
+  }
+}
+
+@media only screen and (min-device-width: 375px) and (max-width: 780px) and (orientation: landscape) {
+  .container {
+    background: url("../../assets/img/Aflac_connect_contactUs_750mobile.jpg")
+      no-repeat top top/cover;
+    justify-content: flex;
+  }
+  .overlayBlock {
+
+    width: 360px!important;
+    padding: 5px;
+    background-color: #11111185;
+    color: #fff;
+    top: 25%;
+    border-radius: 10px;
+    margin-left: 5%;
+    margin-top: 6% !important ;
+    & h1 {
+      font-weight: $font-weight-light;
+      font-size: $font-size-largest !important;
+      margin-top: 3px;
+    }
+  }
+  .bannerHeading {
+  font-size: $font-size-large;
+  margin-left: 5%;
+  margin-bottom: 15px;
+  font-weight: lighter;
+}
+.bannerContent {
+  font-size: $font-size-small;
+  margin-left: 5%;
+}
+.linkFlex {
+  display: flex;
+  color: $color-white;
+  margin-left: 5%;
+  justify-content: space-between;
+}
+.signUpItem {
+  & a {
+    font-weight: $font-weight-bold;
+    font-size: small;
+  }
+}
+}
+
+@media only screen and (min-device-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .container {
+      background: url("../../assets/img/Aflac_connect_contactUs_750mobile.jpg")
+        no-repeat center top/cover;
+      justify-content: flex;
+    }
+    .overlayBlock {
+  
+      width: 600px!important;
+      padding: 40px;
+      background-color: #11111185;
+      color: #fff;
+      top: 25%;
+      border-radius: 10px;
+      margin-top: 6% !important ;
+      & h1 {
+        font-weight: $font-weight-light;
+        font-size: $font-size-largest !important;
+        margin-top: 3px;
+      }
+    }
+    .bannerHeading {
+    font-size: $font-size-largest;
+    margin-bottom: 15px;
+    font-weight: lighter;
+  }
+  .bannerContent {
+    font-size: $font-size-large;
+   
+  }
+  .linkFlex {
+    display: flex;
+    color: $color-white;
+    justify-content: space-between;
+  }
+  .signUpItem {
+    & a {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-large;
+    }
+  }
+  }
+  
+@media only screen and (min-device-width:768px) and (max-width: 1024px) and (orientation: landscape){
+
+    .overlayBlock {
+        width: 550px;
+    }
+     
+    .signUpItem {
+        & a {
+          font-weight: $font-weight-bold;
+          font-size: $font-size-small;
+        }
+    }
+
+
+}
+
+

@@ -1,0 +1,179 @@
+@import "../../assets/scss/shared";
+
+.container {
+    justify-content: center;
+    align-items: center;
+}
+
+.titleBox {
+    padding: 10px;
+    background-color: #016936;
+    color: white;
+    font-weight: 400;
+    width: 1150px;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.headerBox {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    padding: 10px;
+    margin-left: 10px;
+    align-self: center;
+    background-color: #e8e8e8;
+    color: #585858;
+    font-weight: bold;
+    width: 1125px;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.rowContainerBox {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    margin-left: 10px;
+    align-self: center;
+    background-color: white;
+    color: #585858;
+    font-weight: bold;
+    width: 1125px;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 2px solid rgba(0, 0, 255, 0.06);
+}
+
+.refColumn {
+    display: flex;
+    flex: 1;
+    line-height: 30px;
+}
+
+.refRow {
+    display: flex;
+    flex: 0.5;
+    flex-direction: row;
+    align-self: flex-start;
+    justify-content: space-between;
+    line-height: 30px;
+}
+
+.refIcon {
+    font-size: medium;
+    font-weight: 350;
+}
+
+.activityColumn {
+    display: flex;
+    flex: 4.5;
+    line-height: 25px;
+}
+.centerAmountColumn {
+    display: flex;
+    flex: 1.25;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    line-height: 25px;
+}
+
+.centerAmountTextBoxColumn {
+    width: 140px;
+    height: 35px;
+    border: 1.5px solid rgba(0, 0, 255, 0.25);
+}
+
+.budgetAmountColumn {
+    display: flex;
+    flex: 1;
+    justify-content: flex-start;
+    line-height: 25px;
+}
+
+.budgetAmountRow {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    line-height: 25px;
+}
+
+.gap {
+    margin-top: 35px;
+}
+.bottomRowContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    width: 1200px;
+    height: 50px;
+    align-items: center;
+}
+
+.text {
+    flex: 1;
+    font-weight: 500;
+    color: #585858;
+}
+
+.inputTextContainer {
+    display: flex;
+    flex: 2;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 40px;
+}
+
+.inputText {
+    width: 750px;
+    height: 35px;
+    border: 1.5px solid rgba(0, 0, 255, 0.25);
+}
+
+.inputDateContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.inputDate {
+    width: 200;
+    height: 35px;
+    margin-left: 15px;
+    border: 1.5px solid rgba(0, 0, 255, 0.25);
+}
+
+.customText {
+    height: 40px;
+    font-size: $font-size-large;
+    color: $color-black;
+    width: 150%;
+    min-width: 247px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 15px;
+}
+
+.buttonStyle {
+    background-color: #f58220;
+    color: $color-white !important;
+    width: 100px;
+    height: 45px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 15px;
+    &:hover {
+        transition-duration: 500ms;
+        box-shadow: 0 -3px 18px 0 #016936;
+        background-color: #016936;
+    }
+}

@@ -1,0 +1,300 @@
+@import "../../assets/scss/shared.scss";
+
+.landingPageContainer {
+  margin-top: 65px;
+  min-height: calc(100vh - 65px);
+  position: relative;
+}
+.overlayBlock {
+  background-color: #11111173;
+  color: $color-white;
+  border-radius: 10px;
+  position: absolute;
+  padding: 20px;
+  top: 5%;
+  left: 2%;
+  width: 530px;
+  box-shadow: 0px 3px 15px 0px #019dd57d;
+  //text-align: justify;
+}
+.overlayBlockLegal {
+  background-color: #11111173;
+  color: $color-white;
+  border-radius: 10px;
+  position: absolute;
+  padding: 20px;
+  bottom: 5%;
+  left: 2%;
+  margin-right: 20px;
+  //width: 800px;
+}
+.bannerHeadingLegal {
+  font-size: $font-size-small;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.bannerContentLegal {
+  font-size: $font-size-small;
+  margin-top: 0;
+}
+
+.bannerDisplayFlex {
+    display:flex;
+    justify-content: space-between;
+}
+
+.bannerHeadingClose{
+    font-size: $font-size-small;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+.bannerHeading {
+  
+  font-size: $font-size-largest;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: lighter;
+}
+.bannerContent {
+  font-size: $font-size-large;
+  margin-top: 0;
+}
+.linkFlex {
+  display: flex;
+  color: $color-white;
+  justify-content: space-between;
+}
+.signUpItem {
+  & a {
+    font-weight: bold;
+  }
+}
+.viewLegalLink {
+  & a {
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: 300px) and (max-width: 900px) {
+  .overlayBlock {
+    width: auto;
+    margin: 0px 10px;
+    left: 0;
+  }
+
+  .overlayBlockLegal {
+    width: auto;
+    margin: 10px 10px;
+    left: 0;
+  }
+}
+
+@media only screen and (min-width: 300px) and (max-width: 600px) {
+  .bannerHeading {
+    font-size: $font-size-larger;
+  }
+  .bannerContent {
+    font-size: $font-size-small;
+  }
+  .linkFlex {
+    display: block;
+  }
+  .landingPageContainer {
+    //background: url("../../assets/img/aflac-connect-banner-mobile-image.jpg")
+     // no-repeat center center/cover;
+  }
+  .overlayBlock {
+    box-shadow: $box-shadow-mobile;
+    top: 2%;
+    height: 230px;
+    width: auto;
+  }
+  .overlayBlockLegal {
+    height: 223px;
+    //top: 39%;
+  }
+
+  .bannerContentLegal {
+    font-size: 12px;
+  }
+  .bannerHeadingClose {
+    font-size: 11px;
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+}
+
+@media only screen and (min-width: 375px) and (max-width:667px) and (-webkit-min-device-pixel-ratio: 2) 
+and (device-aspect-ratio : 375/667)
+and (aspect-ratio : 667/375)
+and (orientation: portrait) {
+    .overlayBlockLegal {
+        height: auto;
+        top: auto;
+      }
+}
+
+@media only screen and (min-width: 375px) and (max-width:812px) and (-webkit-min-device-pixel-ratio: 2) {
+    .overlayBlockLegal {
+        height: auto;
+        top: 48%;
+      }
+}
+
+@media only screen and (min-width: 414px) and (max-width: 736px) and (-webkit-min-device-pixel-ratio: 3){
+    .bannerHeading {
+        font-size: $font-size-larger;
+      }
+      .bannerContent {
+        font-size: 12px;
+      }
+      .linkFlex {
+        display: block;
+      }
+      .landingPageContainer {
+        // background: url("../../assets/img/aflac-connect-banner-mobile-image.jpg")
+        //   no-repeat center center/cover;
+      }
+      .overlayBlock {
+        box-shadow: $box-shadow-mobile;
+        top: 2%;
+        height: 230px;
+        width:auto;
+    
+      }
+      .overlayBlockLegal {
+        height: auto;
+        top: auto;
+      }
+    
+      .bannerHeadingClose {
+        font-size: 11px;
+        margin-top: 0;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
+}
+
+
+
+
+// @media only screen and (min-width: 300px) and (max-width: 800px) and (orientation: landscape) {
+//     .landingPageContainer {
+//         background: url("../../assets/img/aflac-connect-banner-mobile-image.jpg")
+//           no-repeat center center/cover;
+//       }
+
+// }
+
+@media only screen and (min-device-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .landingPageContainer {
+    // background: url("../../assets/img/aflac-connect-banner-mobile-image.jpg")
+    //   no-repeat center center/cover;
+  }
+
+  .overlayBlock {
+    background-color: #11111173;
+    color: #fff;
+    border-radius: 10px;
+    position: absolute;
+    padding: 20px;
+    top: 3%;
+    left: 3%;
+    width: 650px;
+    box-shadow: 0px 3px 15px 0px #019dd57d;
+  }
+
+  .overlayBlockLegal {
+      bottom: 35%!important;
+     }
+
+    
+}
+
+@media only screen and (min-device-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .landingPageContainer {
+    // background: url("../../assets/img/aflac-connect-banner-mobile-image.jpg")
+    //   no-repeat center center/cover;
+  }
+
+  .overlayBlock {
+    background-color: #11111173;
+    color: #fff;
+    border-radius: 10px;
+    position: absolute;
+    padding: 40px;
+    top: 3%;
+    left: 2% !important;
+    width: 600px !important;
+    box-shadow: 0px 3px 15px 0px #019dd57d;
+  }
+
+  .overlayBlockLegal {
+    bottom: 38%!important;
+    left:2% !important;
+   }
+}
+
+@media only screen and (min-device-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  .container {
+      // background: url("../../assets/img/Aflac_connect_contactUs_750mobile.jpg")
+      //   no-repeat top top/cover;
+    justify-content: flex;
+  }
+
+  .overlayBlockLegal {
+    background-color: #11111173;
+    color: #fff;
+    border-radius: 10px;
+    position: absolute;
+    padding: 20px;
+    bottom: 45%;
+    left: 5%;
+    margin-right: 20px
+  }
+  .bannerHeadingLegal {
+    font-size: $font-size-large;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  .bannerContentLegal {
+    font-size: $font-size-large;
+  }
+
+  .overlayBlock {
+    background-color: #11111173;
+    color: #fff;
+    border-radius: 10px;
+    position: absolute;
+    padding: 25px;
+    top: 4%;
+    left: 5% !important;
+    width: 740px !important;
+    box-shadow: 0px 3px 15px 0px #019dd57d;
+  }
+
+  .bannerHeading {
+    font-size: $font-size-hero-l;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: lighter;
+  }
+  .bannerContent {
+    font-size: $font-size-large;
+    margin-top: 0;
+  }
+  .linkFlex {
+    display: flex;
+    color: $color-white;
+    justify-content: space-between;
+  }
+  .signUpItem {
+    & a {
+      font-weight: bold;
+    }
+  }
+}

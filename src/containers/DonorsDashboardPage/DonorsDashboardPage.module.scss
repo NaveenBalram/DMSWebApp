@@ -1,0 +1,248 @@
+@import '../../assets/scss/shared.scss';
+
+.landingPageContainer{
+    margin-top: 65px;
+    min-height: calc(100vh - 65px);
+    position: relative; 
+    background-color:$color-background-primary;
+}
+
+.sectionContainer{
+    margin-top: 30px;
+    min-height: calc(100vh - 95px);
+    position: relative; 
+    background-color:$color-background-primary;
+}
+
+.next {
+  width: 150px;
+}
+
+.bannerContent{
+    font-size: $font-size-larger;
+    margin-top: 0;
+    font-weight: normal;
+}
+
+.actionBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: flex-start;
+  position: absolute;
+  bottom: 10%;
+  left: 8%;
+  right: 8%;
+}
+
+.profileContainer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-left: 15%;
+    flex-wrap: wrap;
+  }
+
+.footerSection{
+    margin-top: 30px;
+    min-height: 30px;
+    position: relative; 
+    background-color:$color-primary-light;
+    &h1 {
+        color: $color-white!important;
+    }
+   
+}
+
+.overlayBlock{
+    //background-color:$color-background-primary;
+    color: $color-primary;
+    border-radius:12px;
+    position: absolute;
+    padding: 20px;
+    top: 20%;
+    left: 5%;
+    width: 950px;
+    box-shadow: -6px -6px 26px 0 $color-primary;  // #F7A440;
+    transition: max-height .5s ease-in;
+    border:1px solid rgba(255,255,255,0.20);
+    box-shadow: 6px 6px 16px 0 $color-primary;
+    //text-align: justify;
+}
+
+.cardContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.overlayCard{
+    //background-color:$color-background-primary;
+    color: #f6f8f5;
+    border-radius:12px;
+    position: relative;
+    margin-top: 8%;
+    cursor: pointer;
+    background-color: $color-blue-dark;
+    width: 250px;
+    height: 150px;
+    box-shadow: -6px -6px 26px 0 $color-blue-dark;  // #F7A440;
+    transition: max-height .5s ease-in;
+    border:0px solid rgba(94, 35, 35, 0.2);
+    box-shadow: 5px 5px 15px 0 $color-blue-dark;
+    text-align: center;
+}
+
+.overlayCardBottom{
+    color: black;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    background-color: darkorange;
+    width: 250px;
+    height: 35px;
+    border: 1px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 10px;
+}
+
+.linkFlex{
+    display: flex;
+    color: $color-primary;
+    justify-content: space-between;
+    padding: 12px 32px;
+}
+
+.downloadLink{
+    letter-spacing: 0px;
+    line-height: 18px;
+    white-space: nowrap;
+    border-radius: 22px;
+    cursor: pointer;
+    padding: 12px 32px;
+    outline: none;
+    font-weight: bold;
+    background-color: $color-primary;
+    color: $color-white;
+    box-shadow: -6px -6px 26px 0 $color-primary;  // #F7A440;
+    transition: max-height .5s ease-in;
+    border:1px solid rgba(255,255,255,0.20);
+    box-shadow: 6px 6px 16px 0 $color-primary;
+    
+}
+
+
+@media only screen and (min-width:300px) and (max-width:900px){
+    .overlayBlock{
+        width: auto;
+        margin: 0px 10px;
+        left: 0;
+    }
+
+
+}
+
+@media only screen and (min-width:300px) and (max-width:600px){
+    .bannerHeading{
+        font-size: $font-size-larger;
+    }
+    .bannerContent{
+        font-size: $font-size-small;
+    }
+    .linkFlex{
+        display: block;
+    }
+    .overlayBlock{
+        box-shadow: $color-primary;
+        top: 7%;
+        height: 250px;
+    }
+    .overlayBlockLegal{
+        bottom: 0%;
+    }
+    .bannerContentLegal{
+        font-size: x-small;
+    }
+    .downloadLink{
+        width:116px !important;
+    }
+}
+
+.container {
+    position:absolute;
+    width:90%;
+    height:70vh;
+    margin-left: 5%;
+    //background: #2c302d;
+  }
+  .card {
+    width: 60%;
+    height: 80%;
+    max-height: 300px;
+    padding: auto;
+    text-align: center;
+    background: #f58220;
+    border-radius: 10px;
+    //box-shadow: 25px 25px 50px #1b1c1b, -25px -25px 50px #2d302f;
+    &__container {
+      display: grid;
+      width:100%;
+      height:100%;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      justify-items: center;
+      color: white;
+    }
+    &__content {
+      width: 90%;
+      height: 95%;
+      background: $color-primary;
+      margin: 10px auto;
+      border-radius: 5px;
+      padding: 20px;
+      cursor: pointer;
+
+      &:hover{
+        margin-top:-10px;
+          box-shadow:  16px 16px 20px #f58220, 
+               -16px -16px 20px #f58220;
+      transition: 0.3s all ease-in-out;
+      }
+    }
+    &__header {
+      text-transform: uppercase;
+      font-size: 20px;
+      margin: 40px auto;
+    }
+    &__button {
+      padding: 10px;
+      border-radius: 50px;
+      background: #f58220;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      margin: 50px auto;
+    }
+
+    
+  
+  }
+
+  .card_disabled {
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #f58220;
+    color: transparentize($color-text, 0.6);
+    cursor: not-allowed;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    margin: 50px auto;    
+  }
+  

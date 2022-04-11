@@ -1,0 +1,6 @@
+export const SET_AUTH_STATUS = 'SET_AUTH_STATUS';
+export const SET_HIGH_CONTRAST = 'SET_HIGH_CONTRAST';
+export const SET_USER_NAME = 'SET_USER_NAME';
+export const SET_CART_COUNT = 'SET_CART_COUNT';
+export const CLEAR_CART = 'CLEAR_CART';
+export const SAVE_DONORS_STATUS = 'SAVE_DONORS_STATUS';
