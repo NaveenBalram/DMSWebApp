@@ -244,14 +244,14 @@ const FamilyUnitProposal = ({
                     aria-label="From Date"
                     className={cn(styles.customText)}
                     component={InputWrapper}
-                    dateFormat="mm/dd/yyyy"
+                    dateFormat="dd/mm/yyyy"
                     label={
                         <p className={styles.label}>
                             From<span className={styles.required}>*</span>
                         </p>
                     }
                     name="fromDate"
-                    placeholder="MM/DD/YYYY"
+                    placeholder="DD/MM/YYYY"
                     validate={[required]}
                 >
                     {InputDate}

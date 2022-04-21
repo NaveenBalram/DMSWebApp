@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styles from "./StoreWorks.module.scss";
 
 const StoreWorks = (storeWork) => {
-    console.log(storeWork);
+
   return (
     <div className={styles.storeWorksContainer}>
      

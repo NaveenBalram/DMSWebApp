@@ -277,7 +277,7 @@ export const SaveDonorCard = ({
         {information.donorType===0?information.address:centerList.find(x=>x.id===information.centre).name}
       </div>
       <div className={styles.productTagLine}>
-         {information.donorType===1? 'Next Follow up ('+moment(information.followUpDate).format('MM/DD/YYYY')+')':null}
+         {information.donorType===1? 'Next Follow up ('+moment(information.followUpDate).format('DD/MM/YYYY')+')':null}
       </div>
     </div>
   );

@@ -12,153 +12,13 @@ import Spinner from '../../components/Spinner/Spinner';
 import styles from './DonorInformationPage.module.scss';
 import { SavedDonorsCard } from '../../components/SavedDonorsCard/SavedDonorsCard';
 import DonorInformationForm from '../../components/DonorInformationForm/DonorInformationForm';
-import { saveStakeHolderReducer, saveDonorRequest, getDonorByIdRequest, updateDonorRequest } from '../../actions/Donors';
+import {
+    saveStakeHolderReducer, saveDonorRequest, getDonorByIdRequest, updateDonorRequest, getMasterDataRequest, UpdateStakeHolderRequest,
+    saveStakeHolderRequest, deleteStakeHolderRequest
+} from '../../actions/Donors';
 import { savedonorStatusReducer } from '../../actions/Header';
+import StakeHolderForm from '../../components/StakeHolderForm/StakeHolderForm';
 
-
-
-const donationTypeList = [
-    {
-        Id: 1,
-        Name: 'Corporate'
-    },
-    {
-        Id: 2,
-        Name: 'Individual'
-    },
-    {
-        Id: 3,
-        Name: 'Foundation'
-    },
-    {
-        Id: 4,
-        Name: 'Trust'
-    },
-    {
-        Id: 5,
-        Name: 'PSU'
-    },
-];
-
-const donationCategoryList = [
-    {
-        id: 1,
-        name: "FCRA"
-    },
-    {
-        id: 2,
-        name: "Domestic"
-    }
-];
-
-const sourceOfPayment = [
-    {
-        Id: 1,
-        Name: "Cheques"
-    },
-    {
-        Id: 2,
-        Name: "NEFT"
-    },
-    {
-        Id: 3,
-        Name: "IMPS"
-    },
-    {
-        Id: 4,
-        Name: "RTGS"
-    },
-    {
-        Id: 5,
-        Name: "DD"
-    },
-    {
-        Id: 6,
-        Name: "Debit"
-    },
-    {
-        Id: 7,
-        Name: "Card"
-    },
-    {
-        Id: 8,
-        Name: "Credit Card"
-    },
-    {
-        Id: 9,
-        Name: "Payment Gateways"
-    },
-    {
-        Id: 10,
-        Name: "Net Banking"
-    },
-];
-
-const CityList = [
-    {
-        "id": 1,
-        "name": "Mumbai"
-    },
-    {
-        "id": 2,
-        "name": "Delhi"
-    },
-    {
-        "id": 3,
-        "name": "Kolkata"
-    },
-    {
-        "id": 4,
-        "name": "Jaipur"
-    },
-    {
-        "id": 5,
-        "name": "Hyderabad"
-    },
-    {
-        "id": 6,
-        "name": "Vellore"
-    },
-    {
-        "id": 7,
-        "name": "Guwahati"
-    },
-    {
-        "id": 8,
-        "name": "Chennai"
-    },
-    {
-        "id": 9,
-        "name": "Varanasi"
-    }
-];
-
-const purposeList = [
-    {
-        id: 1,
-        Name: "Capex"
-    },
-    {
-        id: 2,
-        Name: "Opex"
-    },
-    {
-        id: 3,
-        Name: "Family Unit Sponsorship"
-    },
-    {
-        id: 4,
-        Name: "Sustainability"
-    },
-    {
-        id: 5,
-        Name: "Corpus"
-    },
-    {
-        id: 6,
-        Name: "Adhoc"
-    }
-];
 
 const centerList = [
 
@@ -330,62 +190,6 @@ const centerList = [
 
 ];
 
-const salutation = [
-
-    {
-        id: 1,
-        Name: 'Mr.'
-    },
-    {
-        id: 2,
-        Name: 'Mrs.'
-    },
-    {
-        id: 3,
-        Name: 'Ms.'
-    },
-    {
-        id: 4,
-        Name: 'Messrs.'
-    },
-    {
-        id: 5,
-        Name: 'Dr.'
-    },
-];
-
-const roleDecisionMaking = [
-    {
-        id: 1,
-        name: "CEO",
-    },
-    {
-        id: 2,
-        name: "CLO",
-    },
-    {
-        id: 3,
-        name: "CFO",
-    },
-    {
-        id: 4,
-        name: "COO",
-    },
-    {
-        id: 5,
-        name: "CTO",
-    },
-    {
-        id: 6,
-        name: "Manager",
-    },
-    {
-        id: 7,
-        name: "Team Leader"
-    }
-];
-
-
 class DonorInformationPage extends Component {
     constructor(props) {
         super(props);
@@ -402,24 +206,72 @@ class DonorInformationPage extends Component {
             centerListState: [],
             donorsList: [],
             information: {},
-            donorisNeedUpdate: false
+            donorisNeedUpdate: false,
+            donationTypeList: [],
+            donationCategoryList: [],
+            sourceOfPayment: [],
+            CityList: [],
+            purposeList: [],
+            centerList: [],
+            salutation: [],
+            roleDecisionMaking: [],
+            stakeHolderEdit: false,
+            stakeHolderAddNew: true,
+            decisionMaker: false,
+            accountInformation: false,
+            stakeHolderId: 0,
+
         };
     }
 
     initialAPICall() {
+        const { getMasterDataRequest } = this.props;
+        this.setState({ isLoading: true })
+        const res = new Promise((resolve, reject) => getMasterDataRequest(
+            { reject, resolve }
+        ));
+        res.then(() => this.handleMasterData());
+        res.catch((error) => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+        })
+    }
+
+    handleMasterData() {
+        const { masterDataLists } = this.props;
+        this.setState(
+            {
+                isLoading: false,
+                donationTypeList: masterDataLists.donorType,
+                sourceOfPayment: masterDataLists.sourceOfPayment,
+                donationCategoryList: masterDataLists.donorCategory,
+                salutation: masterDataLists.salutation,
+                CityList: masterDataLists.locations,
+                purposeList: masterDataLists.purpose,
+                roleDecisionMaking: masterDataLists.roles,
+
+
+            });
     }
 
     componentDidMount() {
+        this.initialAPICall();
+        this.handleApiCalls();
+    }
 
-        const { saveStakeHolderReducer, getDonorByIdRequest, savedonorStatusReducer } = this.props;
-        const donorId = sessionStorage.getItem('donorId');
+    handleApiCalls = () => {
+        const { saveStakeHolderReducer, getDonorByIdRequest } = this.props;
+        const donorId = localStorage.getItem('donorId');
         if (sessionStorage.saveStakeHolderReducer !== undefined) {
             var stakeHolderList = JSON.parse(sessionStorage.saveStakeHolderReducer);
             saveStakeHolderReducer(stakeHolderList);
             this.setState({ isInitialLoading: false })
         }
         if (donorId !== null) {
-            this.setState({ isInitialLoading: true });
+            this.setState({ isInitialLoading: true, accountInformation: true });
             const res = new Promise((resolve, reject) =>
                 getDonorByIdRequest(
                     {
@@ -446,7 +298,7 @@ class DonorInformationPage extends Component {
         saveStakeHolderReducer(donorInfo.stakeHolders);
         this.setState({
             isInitialLoading: false,
-            information: donorInfo
+            information: donorInfo,
         });
         this.handleCSISuccess();
     }
@@ -473,111 +325,91 @@ class DonorInformationPage extends Component {
 
     }
 
-    // handleEditSuccess = (values, information) => {
+    handleEditSuccess = (values, information) => {
 
-    //     const { change } = this.props;
-    //     this.setState({
-    //         goalId: information.id
-    //     });
-
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalAmount',
-    //         information ? information.GoalAmount.toString() : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'atAge',
-    //         information ? information.GoalStartAge.toString() : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'tillAge',
-    //         information ? information.GoalEndAge.toString() : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalPriority',
-    //         information ? information.GoalPriority : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalInflationRate',
-    //         information ? information.GoalInflationRate.toString() : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalCategory',
-    //         information ? information.GoalCategory : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalBucket',
-    //         information ? information.GoalBucket__id : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalFrequency',
-    //         information ? information.GoalFrequency : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalName',
-    //         information ? information.GoalName : null
-    //     );
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalName',
-    //         information ? information.GoalName : null
-    //     );
-
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalInflationRate',
-    //         information ? information.GoalInflationRate : null
-    //     );
-
-    //     change(
-    //         'addGoalOrIncomeForm',
-    //         'goalType',
-    //         information ? information.GoalType : null
-    //     );
-
-    //     if (information.GoalCategory__Name === "Others") {
-    //         this.setState({
-    //             isGoalNameFieldEnabled: true,
-    //             atAgeDisabled: false,
-    //             isInflectionRateHidden: true,
-    //             isGoalNameFieldShow: true
-    //         });
-    //     }
-
-    //     this.setState({
-    //         endOfLifeChecked: information.EndOfLife,
-    //         onLoadform: true
-    //     });
-    //     scroller.scrollTo('addGoalForm', {
-    //         delay: 100,
-    //         duration: 500,
-    //         smooth: 'easeInOutQuart',
-    //     });
+        const { change } = this.props;
+        const { roleDecisionMaking, salutation } = this.state;
+        const roles = roleDecisionMaking.find(x => x.value === information.decisionMakingRole);
+        const saluations = salutation.find(x => x.value === (information.salutation === null ? 'Mr.' : information.salutation));
 
 
-    // };
+        change(
+            'StakeHolderForm',
+            'roleName',
+            information ? roles.id : null
+        );
+        change(
+            'StakeHolderForm',
+            'saluation',
+            information ? saluations.id : null
+        );
+        change(
+            'StakeHolderForm',
+            'stakeHolderName',
+            information ? information.name : null
+        );
+        change(
+            'StakeHolderForm',
+            'dateOfBirth',
+            information ? moment(information.dob).format('MM/DD/yyyy') : null
+        );
+        change(
+            'StakeHolderForm',
+            'mobileNumber',
+            information ? information.mobileNo : null
+        );
+        change(
+            'StakeHolderForm',
+            'designation',
+            information ? information.designation : null
+        );
+        change(
+            'StakeHolderForm',
+            'company',
+            information ? information.company : null
+        );
+        change(
+            'StakeHolderForm',
+            'email',
+            information ? information.emailId : null
+        );
+        change(
+            'StakeHolderForm',
+            'address',
+            information ? information.address : null
+        );
+
+        this.setState({
+            stakeHolderEdit: true,
+            decisionMaker: information.decisionMaker,
+            accountInformation: true,
+            stakeHolderId: information.id,
+            stakeHolderAddNew: false,
+
+        },
+            () => {
+                scroller.scrollTo("AddStakeHolder", {
+                    delay: 100,
+                    duration: 500,
+                    smooth: "easeInOutQuart",
+                });
+            });
+    };
+
 
     handleDeleteConfirm = information => {
         notify.show(
             <div
                 aria-hidden="true"
-                aria-label="Are you sure you want to delete this Goal?"
+                aria-label="Are you sure you want to delete this Stake Holder?"
                 aria-labelledby="exampleModalLabel"
                 aria-modal="true"
                 className={styles.alertMsg}
                 id="exampleModal"
                 role="dialog"
-                title="Are you sure you want to delete this Goal?"
+                title="Are you sure you want to delete this Stake Holder?"
             >
-                Are you sure you want to delete this Goal ?
+                Are you sure you want to delete this Stake Holder ?
                 <div className={styles.alertBtn}>
                     <Button
                         autoFocus
@@ -601,6 +433,27 @@ class DonorInformationPage extends Component {
         );
     };
 
+    handleDeleteSuccess = (information) => {
+        notify.hide();
+        const { deleteStakeHolderRequest } = this.props;
+        const res1 = new Promise((resolve, reject) =>
+            deleteStakeHolderRequest(
+                {
+                    "id": information.id
+                },
+                { reject, resolve })
+        );
+        res1.then(() => this.handleGetDonorsList(parseInt(localStorage.getItem('donorId'))))
+            .catch(error => {
+                if (error.response.status === 400) {
+                    notify.show(`${error.response.data.message}`, 'error', 10000);
+                } else {
+                    notify.show(` ${error}`, 'error', 5000);
+                }
+            });
+    }
+
+
     handleCreateStakeHolder() {
 
         this.setState({
@@ -618,7 +471,7 @@ class DonorInformationPage extends Component {
     handleLoad(value) {
         const { change } = this.props;
         this.setState({
-            isIndividualSelected: value === 1 ? false : true
+            isIndividualSelected: value === 11 ? true : false
         });
     }
 
@@ -628,10 +481,6 @@ class DonorInformationPage extends Component {
         });
     }
 
-    handleDeleteSuccess = information => {
-        
-    };
-
 
     saveStakeHolderInfo = (event) => {
 
@@ -639,6 +488,7 @@ class DonorInformationPage extends Component {
         var stakeHolderObje = JSON.parse(sessionStorage.stakeHolder);
         const { saveStakeHolderReducer, donorStakeHolders, change, reset } = this.props;
         var stakeHoldersList = new Array();
+        const { roleDecisionMaking } = this.state;
 
         stakeHoldersList = [...donorStakeHolders];
         if (stakeHolderObje !== undefined) {
@@ -674,14 +524,15 @@ class DonorInformationPage extends Component {
     handleUpdateSubmit = (values) => {
 
         const { updateDonorRequest } = this.props;
-        const { information } = this.state;
-        var donorType = donationTypeList.find(x => x.Id === values.donationType).Name;
-        var donorCategory = donationCategoryList.find(x => x.id === values.donationCategory).name;
-        var sourceOfPayments = sourceOfPayment.find(x => x.Id === values.sourceofpayment).Name;
-        var purposeLists = purposeList.find(x => x.id === values.purpose).Name;
+        const { information, donationTypeList, sourceOfPayment, purposeList, donationCategoryList } = this.state;
+        var donorType = donationTypeList.find(x => x.id === values.donationType).value;
+        var donorCategory = donationCategoryList.find(x => x.id === values.donationCategory).value;
+        var sourceOfPayments = sourceOfPayment.find(x => x.id === values.sourceofpayment).value;
+        var purposeLists = purposeList.find(x => x.id === values.purpose).value;
+        this.setState({isLoading:true})
 
         const res = new Promise((resolve, reject) =>
-        updateDonorRequest(
+            updateDonorRequest(
                 {
                     "id": information.id,
                     "donorId": information.donorId,
@@ -697,7 +548,7 @@ class DonorInformationPage extends Component {
                     "centre": values.center,
                     "comment": values.commentsRemarks,
                     "followUpDate": moment(values.followUpDate).format("yyyy-MM-DD"),
-                    "donorType":1
+                    "donorType": 1
                 },
                 { reject, resolve }
             )
@@ -731,21 +582,37 @@ class DonorInformationPage extends Component {
     }
 
     handleSubmit = (values) => {
-        const { donorisNeedUpdate } = this.state;
-        if (donorisNeedUpdate === false) {
-            this.setState({isLoading:true});
-            this.handleSave(values);
+        const { donorisNeedUpdate, stakeHolderEdit, accountInformation, stakeHolderAddNew } = this.state;
+
+        if (stakeHolderEdit === true) {
+            if (accountInformation === true && stakeHolderAddNew === false) {
+                this.setState({ isLoading: true });
+                this.handleUpdateStakeHolder(values);
+            } else {
+                if (stakeHolderAddNew === true && accountInformation === true) {
+                    this.setState({ isLoading: true });
+                    this.handleAddStakeHolder(values);
+                }
+            }
         } else {
-            this.handleUpdateSubmit(values);
+            if (donorisNeedUpdate === false) {
+                this.setState({ isLoading: true });
+                this.handleSave(values);
+            } else {
+                this.handleUpdateSubmit(values);
+            }
         }
+
     }
 
     handleSave = (values) => {
         const { saveDonorRequest, donorStakeHolders } = this.props;
-        var donorType = donationTypeList.find(x => x.Id === values.donationType).Name;
-        var donorCategory = donationCategoryList.find(x => x.id === values.donationCategory).name;
-        var sourceOfPayments = sourceOfPayment.find(x => x.Id === values.sourceofpayment).Name;
-        var purposeLists = purposeList.find(x => x.id === values.purpose).Name;
+        const { donationTypeList, sourceOfPayment, donationCategoryList, purposeList } = this.state;
+
+        var donorType = donationTypeList.find(x => x.id === values.donationType).value;
+        var donorCategory = donationCategoryList.find(x => x.id === values.donationCategory).value;
+        var sourceOfPayments = sourceOfPayment.find(x => x.id === values.sourceofpayment).value;
+        var purposeLists = purposeList.find(x => x.id === values.purpose).value;
         const res = new Promise((resolve, reject) =>
             saveDonorRequest(
                 {
@@ -792,19 +659,28 @@ class DonorInformationPage extends Component {
         });
     }
 
+    handleCancelBtn = () => {
+        const { reset, history, saveStakeHolderReducer } = this.props;
+        localStorage.clear();
+        sessionStorage.clear();
+        const stakeHolderList = [];
+        saveStakeHolderReducer(stakeHolderList);
+        reset('donorInformation');
+        history.push('/donorProfilePage');
+    }
 
     handleCSISuccess = () => {
         const { change, donorInfo } = this.props;
-        const { information } = this.state;
-        if (Object.keys(information).length !== 0) {
+        const { information, donationTypeList, donationCategoryList, sourceOfPayment, purposeList } = this.state;
+
+        if (Object.keys(information).length !== 0 && donationTypeList.length !== 0 && donationCategoryList.length != 0 && sourceOfPayment.length !== 0) {
 
             this.setState({ donorisNeedUpdate: true });
-
             this.handlecenter(information.location)
             change(
                 'donorInformation',
                 'donationType',
-                information ? donationTypeList.find(x => x.Name === information.type).Id : null
+                information ? donationTypeList.find(x => x.value === information.type).id : null
             );
             change(
                 'donorInformation',
@@ -819,7 +695,7 @@ class DonorInformationPage extends Component {
             change(
                 'donorInformation',
                 'donationCategory',
-                information ? donationCategoryList.find(x => x.name === information.category).id : null
+                information ? donationCategoryList.find(x => x.value === information.category).id : null
             );
             change(
                 'donorInformation',
@@ -834,12 +710,12 @@ class DonorInformationPage extends Component {
             change(
                 'donorInformation',
                 'sourceofpayment',
-                information ? sourceOfPayment.find(x => x.Name === information.sourceOfPayment).Id : null
+                information ? sourceOfPayment.find(x => x.value === information.sourceOfPayment).id : null
             );
             change(
                 'donorInformation',
                 'purpose',
-                information ? purposeList.find(x => x.Name === information.purpose).id : null
+                information ? purposeList.find(x => x.value === information.purpose).id : null
             );
 
             change(
@@ -871,12 +747,21 @@ class DonorInformationPage extends Component {
             );
 
             this.setState({
-                isInitialLoading: false
-            })
+                isInitialLoading: false,
+                stakeHolderEdit: false,
+                stakeHolderAddNew: true
+                // accountInformation:false
+            },
+                () => {
+                    scroller.scrollTo("donorCard", {
+                        delay: 100,
+                        duration: 500,
+                        smooth: "easeInOutQuart",
+                    });
+                });
         }
 
     }
-
 
     handleSubmitSuccess = () => {
         const { history } = this.props;
@@ -884,24 +769,172 @@ class DonorInformationPage extends Component {
         history.push("/donorProfilePage");
     }
 
-
     handleExit = () => {
         const { history } = this.props;
         history.push("/productHomePage");
     }
+    //StakeHolders
+
+    handleUpdateStakeHolder = (values) => {
+        const { UpdateStakeHolderRequest } = this.props;
+        const { stakeHolderId, roleDecisionMaking, salutation } = this.state;
+
+        const res = new Promise((resolve, reject) =>
+            UpdateStakeHolderRequest(
+                {
+                    "id": stakeHolderId,
+                    "donorId": parseInt(localStorage.getItem('donorId')),
+                    "decisionMakingRole": roleDecisionMaking.find(x => x.id === values.roleName).value,
+                    "donorRelationShip": "",
+                    "salutation": salutation.find(x => x.id === values.saluation).value,
+                    "name": values.stakeHolderName,
+                    "designation": values.designation,
+                    "company": values.company,
+                    "emailId": values.email,
+                    "mobileNo": values.mobileNumber,
+                    "address": values.address,
+                    "dob": moment(values.dateOfBirth).format("yyyy-MM-DD"),
+                    "decisionMaker": localStorage.getItem('isEmailSelected') === 'true' ? true : false
+                },
+                { reject, resolve }
+            ));
+        res.then(() => this.handleGetDonorsList(parseInt(localStorage.getItem('donorId'))));
+        res.catch(error => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+            if (error.response.status === 400) {
+                notify.show(
+                    `An error occurred. ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            } else {
+                notify.show(
+                    `An error occurred. Please try again. Technical Information: ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            }
+            this.setState({
+                isLoading: false,
+                stakeHolderEdit: false
+            });
+        });
+
+    }
+
+    handleAddStakeHolder = (values) => {
+
+        const { saveStakeHolderRequest } = this.props;
+        const { roleDecisionMaking, salutation } = this.state;
+        const res = new Promise((resolve, reject) =>
+            saveStakeHolderRequest(
+                {
+                    "donorId": parseInt(localStorage.getItem('donorId')),
+                    "decisionMakingRole": roleDecisionMaking.find(x => x.id === values.roleName).value,
+                    "donorRelationShip": "",
+                    "salutation": salutation.find(x => x.id === values.saluation).value,
+                    "name": values.stakeHolderName,
+                    "designation": values.designation,
+                    "company": values.company,
+                    "emailId": values.email,
+                    "mobileNo": values.mobileNumber,
+                    "address": values.address,
+                    "dob": moment(values.dateOfBirth).format("yyyy-MM-DD"),
+                    "decisionMaker": localStorage.getItem('isEmailSelected') === 'true' ? true : false
+                },
+                { reject, resolve }
+            ));
+        res.then(() => this.handleGetDonorsList(parseInt(localStorage.getItem('donorId'))));
+        res.catch(error => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+            if (error.response.status === 400) {
+                notify.show(
+                    `An error occurred. ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            } else {
+                notify.show(
+                    `An error occurred. Please try again. Technical Information: ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            }
+            this.setState({
+                isLoading: false,
+                //stakeHolderEdit:false
+            });
+        });
+
+
+
+    }
+
+    handleGetDonorsList = (donorId) => {
+        const { getDonorByIdRequest } = this.props;
+        this.setState({
+            isLoading: false, isInitialLoading: true
+        });
+        const res = new Promise((resolve, reject) =>
+            getDonorByIdRequest(
+                {
+                    id: donorId,
+                    donorTypeId: 1
+                },
+                { reject, resolve }
+            )
+        );
+        res.then(() => this.handleInitialLoad());
+        res.catch((error) => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+        })
+    }
+
+    handleStakeHolderCancelBtn = () => {
+        this.setState({ stakeHolderEdit: false, stakeHolderAddNew: true });
+        this.handleCSISuccess()
+    }
+
+    handleAddStakeHolderBtn = () => {
+        this.setState({ stakeHolderEdit: true, stakeHolderAddNew: true });
+    }
+
 
     render() {
         const {
+            accountInformation,
             hasErrors,
             isInitialLoading,
             isLoading,
             isIndividualSelected,
             isAddDonorOrReferred,
             centerListState,
-            donorisNeedUpdate
+            donorisNeedUpdate,
+            donationTypeList,
+            sourceOfPayment,
+            purposeList,
+            donationCategoryList,
+            roleDecisionMaking,
+            CityList,
+            salutation,
+            stakeHolderEdit,
+            decisionMaker,
+            stakeHolderAddNew
         } = this.state;
 
-        const { donorStakeHolders, isDonorCreated } = this.props;
+        const { donorStakeHolders } = this.props;
 
         // gaolLists.sort(function (a, b) { return a.GoalPriority - b.GoalPriority });
         return (
@@ -918,7 +951,13 @@ class DonorInformationPage extends Component {
                         <div className={styles.heroSubText}>
                             This page allows you to View, Add, and Edit your Donors.
                         </div>
-                        <h2 className={styles.textLight}>Saved Stakeholders</h2>
+                        <div className={styles.containerflexbox}>
+                            <h2 className={styles.textLight}>Saved Stakeholders</h2>
+                            {accountInformation === true && stakeHolderAddNew === true ? (<div className={styles.ImageContainer} onClick={this.handleAddStakeHolderBtn}>
+                                <img src={require(`../../assets/img/stakeholders.png`)} />
+                                <span className={styles.caption}>Add New StakeHolder</span>
+                            </div>) : (null)}
+                        </div>
                         {donorStakeHolders.length === 0 ? (
                             <div className={styles.subContainer2}>
                                 <div className={styles.heroSubText}>
@@ -937,11 +976,9 @@ class DonorInformationPage extends Component {
                                 ))}
                             </div>
                         )}
-
-                        {/* {isAddDonorOrReferred === true ? ( */}
-                        <div className={styles.subContainer} name="AddStakeHolder">
+                        {stakeHolderEdit === false ? (<div className={styles.subContainer} name="AddStakeHolder">
                             <DonorInformationForm
-                                accountInformation={donorisNeedUpdate}
+                                accountInformation={accountInformation}
                                 donationTypes={donationTypeList}
                                 sourceOfPayment={sourceOfPayment}
                                 cityList={CityList}
@@ -957,8 +994,20 @@ class DonorInformationPage extends Component {
                                 handlecenter={(value) => this.handlecenter(value)}
                                 handleCSISuccess={() => this.handleCSISuccess()}
                                 loading={isLoading}
+                                handleCancelBtn={this.handleCancelBtn}
                             />
-                        </div>
+                        </div>) : (<div className={styles.subContainer} name="AddStakeHolder">
+                            <StakeHolderForm
+                                salutation={salutation}
+                                roleDecisionMaking={roleDecisionMaking}
+                                isIndividualSelected={isIndividualSelected}
+                                decisionMaker={decisionMaker}
+                                onSubmit={this.handleSubmit}
+                                handleStakeHolderCancelBtn={this.handleStakeHolderCancelBtn}
+                                accountInformation={!stakeHolderAddNew}
+                                loading={isLoading}
+                            />
+                        </div>)}
                     </div>
                 )}
             </div>)
@@ -986,7 +1035,11 @@ DonorInformationPage.propTypes = {
     getDonorByIdRequest: PropTypes.func.isRequired,
     isDonorCreated: PropTypes.bool.isRequired,
     savedonorStatusReducer: PropTypes.func.isRequired,
-    updateDonorRequest: PropTypes.func.isRequired
+    updateDonorRequest: PropTypes.func.isRequired,
+    getMasterDataRequest: PropTypes.func.isRequired,
+    saveStakeHolderRequest: PropTypes.func.isRequired,
+    UpdateStakeHolderRequest: PropTypes.func.isRequired,
+    deleteStakeHolderRequest: PropTypes.func.isRequired,
 };
 
 DonorInformationPage.defaultProps = {
@@ -995,8 +1048,8 @@ DonorInformationPage.defaultProps = {
 const mapStateToProps = state => ({
     donorStakeHolders: state.donor.donorStakeHolders,
     donorInfo: state.donor.donorInfo.data,
-    isDonorCreated: state.header.isDonorCreated
-
+    isDonorCreated: state.header.isDonorCreated,
+    masterDataLists: state.donor.masterDataLists
 });
 
 const mapDispatchToProps = {
@@ -1006,7 +1059,11 @@ const mapDispatchToProps = {
     saveDonorRequest,
     getDonorByIdRequest,
     savedonorStatusReducer,
-    updateDonorRequest
+    updateDonorRequest,
+    getMasterDataRequest,
+    saveStakeHolderRequest,
+    UpdateStakeHolderRequest,
+    deleteStakeHolderRequest
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DonorInformationPage);

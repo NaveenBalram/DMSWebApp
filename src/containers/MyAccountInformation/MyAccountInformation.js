@@ -152,7 +152,7 @@ class MyAccountInformation extends Component {
     this.setState({
       isLoading: true,
     });
-    console.log("customerInfo", customerInfo)
+  
   
     const dateFormate = moment (values.dateOfBirth).format ('YYYY-MM-DD');
     const isEmailSelected = localStorage.getItem('isEmailSelected');
@@ -233,7 +233,7 @@ class MyAccountInformation extends Component {
       isLoading,
     } = this.state;
     const { customerInfo,signUpInitialData} = this.props;
-    console.log(signUpInitialData);
+
     return (
       <div className={styles.container}>
         {isInitialLoading ? (

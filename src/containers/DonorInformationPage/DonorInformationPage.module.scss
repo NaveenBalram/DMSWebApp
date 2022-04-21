@@ -12,6 +12,12 @@
   background-color: $color-black;
 }
 
+.containerflexbox {
+  display:flex;
+  width:100%;
+  justify-content: space-between;
+}
+
 .subContainer {
   display: flex;
   flex-direction: column;
@@ -95,12 +101,41 @@
 .textLight {
   color: $color-primary;
 }
+
+.textLightSmaller {
+  color: $color-primary;
+  font-size: $font-size-medium;
+  font-weight: $font-weight-light;
+}
 .goalText {
     display: flex;
     align-content:flex-start;
     color: $color-primary;
   }
-  
+  .ImageContainer {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 15%;
+}
+.img {
+  height: 120px;
+  width: 200px;
+  display: flex;
+  align-self: center;
+  object-fit: contain;
+}
+.caption {
+    display: block;
+    color: $color-primary;
+    font-size: $font-size-small;
+    font-weight: $font-weight-light;
+    &:hover {
+      transition-duration: 500ms;
+      color: #f58220!important;
+      font-size: $font-size-medium;
+    }
+}
 
 .alertMsg {
   display: flex;

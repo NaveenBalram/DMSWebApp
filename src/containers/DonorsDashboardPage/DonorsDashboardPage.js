@@ -46,7 +46,10 @@ class DonorsDashboardPage extends Component {
 
     handleCreateDonorProposal = ()=>{
       const {history} = this.props;
+     if( localStorage.getItem('isDonorCreated')!=='true'){
       history.push('/donorProposalPage');
+     }
+     
     }
 
     handleCreateProfile = ()=>{
@@ -59,21 +62,21 @@ class DonorsDashboardPage extends Component {
                 <div className={styles.card__content}>
                   <h3 className={styles.card__header}>Donor Informations</h3>
                   <p className={styles.card__info}>To Add and update donors information and  their referrals</p>
-                  <button className={styles.card__button} onClick={this.handleCreateDonorInformation}>{isDonorCreated===true?'Create Profile':'Update Profile'}</button>
+                  <button className={styles.card__button} onClick={this.handleCreateDonorInformation}>{localStorage.getItem('isDonorCreated')==='true'?'Create Profile':'Update Profile'}</button>
                 </div>
               </div>
               <div className={styles.card}>
                 <div className={styles.card__content}>
                   <h3 className={styles.card__header}>Donor Proposals </h3>
-                  <p className={styles.card__info}>To add propsaols of donors.</p>
-                  <button className={isDonorCreated===true?styles.card_disabled:styles.card__button} onClick={this.handleCreateDonorProposal}>Create Proposal</button>
+                  <p className={styles.card__info}>To add proposal for donors.</p>
+                  <button className={localStorage.getItem('isDonorCreated')==='true'?styles.card_disabled:styles.card__button} onClick={this.handleCreateDonorProposal}>Create Proposal</button>
                 </div>
               </div>
               <div className={styles.card}>
                 <div className={styles.card__content}>
                   <h3 className={styles.card__header}>Donor Documents</h3>
                   <p className={styles.card__info}>To Donors documents like aadhar card and other informations.</p>
-                  <button className={isDonorCreated===true?styles.card_disabled:styles.card__button}>Add Documents</button>
+                  <button className={localStorage.getItem('isDonorCreated')==='true'?styles.card_disabled:styles.card__button}>Add Documents</button>
                 </div>
               </div>
             </div>

@@ -101,5 +101,50 @@ export const getAllDonorsSuccess = (payload) => ({
     type:constants.DELETE_DONOR_SUCCESS
   });
 
+  export const getMasterDataRequest =(meta)=>({
+    meta,
+    type:constants.GET_ALL_MASTER_DATA_INFO_REQUEST
+  });
+
+  export const getMasterDataSuccess = (payload) =>({
+    payload,
+    type:constants.GET_ALL_MASTER_DATA_INFO_SUCCESS
+  });
+
+  
+//StakeHolder
+
+export const deleteStakeHolderSuccess = (payload)=>({
+  payload,
+  type:constants.DELETE_STAKE_HOLDER_SUCCESS
+});
+
+export const deleteStakeHolderRequest =(payload,meta)=>({
+  meta,
+  payload,
+  type:constants.DELETE_STAKE_HOLDER_REQUEST
+});
+
+export const saveStakeHolderSuccess = (payload)=>({
+  payload,
+  type:constants.SAVE_STAKE_HOLDER_SUCCESS
+});
+
+export const saveStakeHolderRequest =(payload,meta)=>({
+  meta,
+  payload,
+  type:constants.SAVE_STAKE_HOLDER_REQUEST
+});
+
+export const UpdateStakeHolderRequest =(payload,meta)=>({
+  meta,
+  payload,
+  type:constants.UPDATE_STAKE_HOLDER_REQUEST
+});
+
+export const UpdateStakeHolderSuccess =(payload)=>({
+  payload,
+  type:constants.UPDATE_STAKE_HOLDER_SUCCESS
+});
 
 

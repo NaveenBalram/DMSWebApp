@@ -33,6 +33,8 @@ class DonorProfilePage extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    localStorage.clear();
+    sessionStorage.clear();
     this.handleInitialAPICall();
   }
 
@@ -68,7 +70,10 @@ class DonorProfilePage extends Component {
   }
 
   handleDonationDashBoard = () => {
-    const { history } = this.props;
+    const { history ,savedonorStatusReducer} = this.props;
+    localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem('isDonorCreated',true);
     history.push('/donorsDashboardPage');
   }
 
@@ -83,7 +88,8 @@ class DonorProfilePage extends Component {
 
   handleEditSuccess = (value) => {
     const { history, savedonorStatusReducer } = this.props;
-    savedonorStatusReducer({ payload: { isDonorCreated: false } });
+    //savedonorStatusReducer({ payload: { isDonorCreated: false } });
+    localStorage.setItem('isDonorCreated',false);
     localStorage.setItem('donorId', value);
     history.push('/donorsDashboardPage');
   }
@@ -258,7 +264,8 @@ DonorProfilePage.propTypes = {
   getAllDonorsRequest: PropTypes.func.isRequired,
   savedonorStatusReducer: PropTypes.func.isRequired,
   deleteDonorKindRequest: PropTypes.func.isRequired,
-  deleteDonorRequest: PropTypes.func.isRequired
+  deleteDonorRequest: PropTypes.func.isRequired,
+  getMasterDataRequest:PropTypes.func.isRequired
 };
 
 DonorProfilePage.defaultProps = {
@@ -268,6 +275,7 @@ DonorProfilePage.defaultProps = {
 const mapStateToProps = state => ({
   highContrast: state.header.highContrast,
   donorsInformation: state.donor.donorsInformation.data,
+  
   // isDonorCreated:state.header.isDonorCreated
 });
 
@@ -278,7 +286,7 @@ const mapDispatchToProps = {
   setUserName,
   savedonorStatusReducer,
   deleteDonorKindRequest,
-  deleteDonorRequest
+  deleteDonorRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DonorProfilePage);

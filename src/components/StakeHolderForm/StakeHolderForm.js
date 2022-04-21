@@ -16,7 +16,7 @@ import {
   checkUpperAndLowerCase,
 } from "../../utilities/validations";
 import { InputText } from "../InputText/InputText";
-import styles from "./StakeHolderInformationForm.module.scss";
+import styles from "./StakeHolderForm.module.scss";
 import InputWrapper from "../InputWrapper/InputWrapper";
 import Button from "../Button/Button";
 import InputPassword from "../InputPassword/InputPassword";
@@ -33,7 +33,7 @@ import {
   initialMask,
 } from "../../utilities/masks";
 
-const StakeHolderInformationForm = ({
+const StakeHolderForm = ({
   // getBrokerInfo,
   handleCSISuccess,
   handleSubmit,
@@ -53,41 +53,20 @@ const StakeHolderInformationForm = ({
   isIndividualSelected,
   handleStakeHolder,
   onSubmitStakeHolder,
-  saveStakeHolderInfo
+  saveStakeHolderInfo,
+  handleStakeHolderCancelBtn,
+  decisionMaker
 }) => {
+
   const textStyle = highContrast ? styles.lightText : null;
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [isNotSelected, setIsNotExpanded] = useState(false);
-  const [isShowTC, setIsShowTC] = useState(false);
-  const [userName,setUserName] = useState('');
-  const [company,setCompany] = useState('');
-  const [address,setAddress] = useState('');
-  const [designation,setDesignation] = useState('');
-  const [dateOfBirth,setDob] = useState('');
-  const [mobileNumber,setMobileNumber] = useState('');
-  const [emailId,setEmail] = useState('');
-  const [roles,setRoles] = useState(0);
-  const [releationShip,setReleationShip] = useState('');
-  const [salutations,setSalutation] = useState('');
-  
-  var values = new Object();
-  values.dateOfBirth = dateOfBirth;
-  values.company = company;
-  values.address = address;
-  values.designation = designation;
-  values.emailId = emailId;
-  values.mobileNumber = mobileNumber;
-  values.userName = userName;
-  values.decisionMaker = localStorage.getItem('isEmailSelected');
-  values.setRoles = roles;
-  values.releationShip = releationShip;
-  values.salutation = salutations;
-  sessionStorage.setItem('stakeHolder',JSON.stringify(values));
+  const [isExpanded, setIsExpanded] = useState(decisionMaker === true ? true : false);
+  const [isNotSelected, setIsNotExpanded] = useState(decisionMaker === false ? true : false);
+
 
   const toggleDisplay = (value) => {
     setIsExpanded(value);
     localStorage.setItem('isEmailSelected', value);
-    
+
     setIsNotExpanded(!value);
   };
 
@@ -97,15 +76,15 @@ const StakeHolderInformationForm = ({
     setIsNotExpanded(value);
   };
 
-  const toggleShowTermsConditions = (value) => {
-    setIsShowTC(value);
-  };
- 
+  // const toggleShowTermsConditions = (value) => {
+  //   setIsShowTC(value);
+  // };
+
 
   return (
     <Form
       className={styles.formStyle}
-      name="StakeHolderInformationForm"
+      name="StakeHolderForm"
       onLoad={handleCSISuccess}
       onSubmit={handleSubmit}
       type="submit"
@@ -130,7 +109,7 @@ const StakeHolderInformationForm = ({
           })}
           placeholder="select"
           validate={[required]}
-          onChange={(value)=>setRoles(value)}
+
         >
           {InputDropdown}
         </Field>) : (<Field
@@ -148,7 +127,7 @@ const StakeHolderInformationForm = ({
           placeholder="Releation with Donor"
           type="text"
           validate={[required]}
-          onChange={(value) => setReleationShip(value.target.value)}
+
         >
           {InputText}
         </Field>)}
@@ -170,116 +149,116 @@ const StakeHolderInformationForm = ({
           />
         </div>
         <div className={styles.row}>
-        <Field
-          aria-label="Saluation"
-          className={cn(styles.customText, styles.customDropdown)}
-          component={InputWrapper}
-          isSearchable={false}
-          label={
-            <p className={styles.label}>
-              Saluation<span className={styles.required}>*</span>
-            </p>
-          }
-          name="saluation"
-          options={salutation.map((item) => {
-            return { label: item.value, value: item.id };
-          })}
-          placeholder="select"
-          validate={[required]}
-          onChange={(value)=>setSalutation(value)}
-        >
-          {InputDropdown}
-        </Field>
-        <Field
-          aria-label="Name"
-          className={styles.customText}
-          component={InputWrapper}
-                 label={
-            <p className={styles.label}>
-              Name<span className={styles.required}>*</span>
-            </p>
-          }
-          name="stakeHolderName"
-          placeholder="Name"
-          type="text"
-          validate={[required]}
-          onChange={(value)=>(setUserName(value.target.value))}
-        >
-          {InputText}
-        </Field>
-        <Field
-          aria-label="date of birth"
-          className={cn(styles.customText)}
-          component={InputWrapper}
-          dateFormat="mm/dd/yyyy"
-          label={
-            <p className={styles.label}>
-              Date Of Birth<span className={styles.required}>*</span>
-            </p>
-          }
-          name="dateOfBirth"
-          placeholder="MM/DD/YYYY"
-          validate={[required, beforeNowDaysMMDDYYYY]}
-          onChange={(value)=>setDob(value.target.value)}
-        >
-          {InputDate}
-        </Field>
+          <Field
+            aria-label="Saluation"
+            className={cn(styles.customText, styles.customDropdown)}
+            component={InputWrapper}
+            isSearchable={false}
+            label={
+              <p className={styles.label}>
+                Saluation<span className={styles.required}>*</span>
+              </p>
+            }
+            name="saluation"
+            options={salutation.map((item) => {
+              return { label: item.value, value: item.id };
+            })}
+            placeholder="select"
+            validate={[required]}
+
+          >
+            {InputDropdown}
+          </Field>
+          <Field
+            aria-label="Name"
+            className={styles.customText}
+            component={InputWrapper}
+            label={
+              <p className={styles.label}>
+                Name<span className={styles.required}>*</span>
+              </p>
+            }
+            name="stakeHolderName"
+            placeholder="Name"
+            type="text"
+            validate={[required]}
+
+          >
+            {InputText}
+          </Field>
+          <Field
+            aria-label="date of birth"
+            className={cn(styles.customText)}
+            component={InputWrapper}
+            dateFormat="mm/dd/yyyy"
+            label={
+              <p className={styles.label}>
+                Date Of Birth<span className={styles.required}>*</span>
+              </p>
+            }
+            name="dateOfBirth"
+            placeholder="MM/DD/YYYY"
+            validate={[required, beforeNowDaysMMDDYYYY]}
+
+          >
+            {InputDate}
+          </Field>
         </div>
-        
+
         <div className={styles.row}>
-        <Field
-          aria-label="phone number"
-          className={styles.customText}
-          component={InputWrapper}
-          label={
-            <p className={styles.label}>
-              Mobile Number<span className={styles.required}>*</span>
-            </p>
-          }
-         // mask={phoneNumberMask}
-          name="mobileNumber"
-          placeholder=""
-          type="text"
-          validate={[required]}
-          onChange={(value)=>setMobileNumber(value.target.value)}
-        >
-          {InputText}
-        </Field>
-        <Field
-          aria-label="Designation"
-          className={cn(styles.customText)}
-          component={InputWrapper}
-          label={
-            <p className={styles.label}>
-              Designation<span className={styles.required}>*</span>
-            </p>
-          }
-          name="designation"
-          placeholder="Designaton"
-          validate={[required]}
-          onChange={(value)=>setDesignation(value.target.value)}
-        >
-          {InputText}
-        </Field>
-        <Field
-          aria-label="Company"
-          className={cn(styles.customText)}
-          component={InputWrapper}
-          label={
-            <p className={styles.label}>
-              Company<span className={styles.required}>*</span>
-            </p>
-          }
-          name="company"
-          placeholder="company"
-          validate={[required]}
-          onChange={(value)=>setCompany(value.target.value)}
-        >
-          {InputText}
-        </Field>
-        
+          <Field
+            aria-label="phone number"
+            className={styles.customText}
+            component={InputWrapper}
+            label={
+              <p className={styles.label}>
+                Mobile Number<span className={styles.required}>*</span>
+              </p>
+            }
+            // mask={phoneNumberMask}
+            name="mobileNumber"
+            placeholder=""
+            type="text"
+            validate={[required]}
+
+          >
+            {InputText}
+          </Field>
+          <Field
+            aria-label="Designation"
+            className={cn(styles.customText)}
+            component={InputWrapper}
+            label={
+              <p className={styles.label}>
+                Designation<span className={styles.required}>*</span>
+              </p>
+            }
+            name="designation"
+            placeholder="Designaton"
+            validate={[required]}
+
+          >
+            {InputText}
+          </Field>
+          <Field
+            aria-label="Company"
+            className={cn(styles.customText)}
+            component={InputWrapper}
+            label={
+              <p className={styles.label}>
+                Company<span className={styles.required}>*</span>
+              </p>
+            }
+            name="company"
+            placeholder="company"
+            validate={[required]}
+
+          >
+            {InputText}
+          </Field>
+
         </div>
-       
+
         <Field
           aria-label="email address"
           className={styles.customText}
@@ -294,11 +273,11 @@ const StakeHolderInformationForm = ({
           placeholder="example@example.com"
           type="text"
           validate={[required, email]}
-          onChange={(value)=>setEmail(value.target.value)}
+
         >
           {InputText}
         </Field>
-        
+
         <Field
           aria-label="Address"
           className={styles.customText}
@@ -308,20 +287,28 @@ const StakeHolderInformationForm = ({
           placeholder="Address"
           type="text"
           validate={[required]}
-          onChange={(value)=>setAddress(value.target.value)}
+
         >
           {InputText}
         </Field>
-       
-       
+
+
       </div>
       <div className={styles.nextButton}>
+        <div
+          className={styles.cancelBtn}
+          onClick={() => handleStakeHolderCancelBtn()}
+          //onKeyPress={refresh}
+          role="button"
+          tabIndex="0"
+        >
+          Cancel
+        </div>
         <Button
           className={styles.next}
           disabled={submitting || loading}
           submitting={submitting || loading}
-          //type="submit"
-          onClick={(event)=>saveStakeHolderInfo(event)}
+          type="submit"
         >
           <span>{accountInformation ? "Update" : "Add StakeHolder"}</span>
         </Button>
@@ -330,7 +317,7 @@ const StakeHolderInformationForm = ({
   );
 };
 
-StakeHolderInformationForm.propTypes = {
+StakeHolderForm.propTypes = {
   isIndividualSelected: PropTypes.bool.isRequired,
   handleCSISuccess: PropTypes.func.isRequired,
   handleSubmits: PropTypes.func.isRequired,
@@ -349,5 +336,5 @@ StakeHolderInformationForm.propTypes = {
 };
 
 export default reduxForm({
-  form: "StakeHolderInformationForm",
-})(StakeHolderInformationForm);
+  form: "StakeHolderForm",
+})(StakeHolderForm);

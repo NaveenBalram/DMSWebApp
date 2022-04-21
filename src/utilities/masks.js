@@ -116,3 +116,19 @@ export const accountNumberMask = [
   /\d/,
   /\d/,
 ];
+
+export const indianCurrencymask=[
+  /\d{1,2}/,
+  /\d{1,2}/,
+  ",",
+  ")",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+]

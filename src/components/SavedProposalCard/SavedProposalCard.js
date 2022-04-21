@@ -277,10 +277,10 @@ export const SavedProposalCard = ({
                     Duration
                 </div>
                 <div className={styles.productTagLine}>
-                    From : {moment(information.periodOfDonationFrom).format('MM/DD/YYYY')}
+                    From : {moment(information.periodOfDonationFrom).format('DD/MM/YYYY')}
                 </div>
                 <div className={styles.productTagLine}>
-                    To :{moment(information.periodofDonationTo).format('MM/DD/YYYY')}
+                    To :{moment(information.periodofDonationTo).format('DD/MM/YYYY')}
                 </div>
             </div>
             <div className={styles.gap}></div>

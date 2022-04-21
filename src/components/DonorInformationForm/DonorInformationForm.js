@@ -53,9 +53,16 @@ const DonorInformationForm = ({
   handleLoad,
   isIndividualSelected,
   saveStakeHolderInfo,
-  handlecenter
+  handlecenter,
+  handleCancelBtn,
 }) => {
   const textStyle = highContrast ? styles.lightText : null;
+
+  
+  const refresh = () => {
+    // re-renders the component
+    
+}
 
   return (
     <Form
@@ -84,7 +91,7 @@ const DonorInformationForm = ({
             }
             name="donationType"
             options={donationTypes.map((item) => {
-              return { label: item.Name, value: item.Id };
+              return { label: item.value, value: item.id };
             })}
             placeholder="Donation type"
             validate={[required]}
@@ -136,7 +143,7 @@ const DonorInformationForm = ({
             }
             name="donationCategory"
             options={donorCategories.map((item) => {
-              return { label: item.name, value: item.id };
+              return { label: item.value, value: item.id };
             })}
             placeholder="Donation Category"
             validate={[required]}
@@ -146,17 +153,17 @@ const DonorInformationForm = ({
           </Field>
         </div>
 
-       {accountInformation===false?( 
-      <div>
-       <div className={styles.horizontalBorder} />
-        <StakeHolderInformationForm
-          salutation={salutation}
-          roleDecisionMaking={roleDecisionMaking}
-          isIndividualSelected={isIndividualSelected}
-          onSubmit={handleSubmit}
-          saveStakeHolderInfo={(event) => saveStakeHolderInfo(event)}
-        />
-        </div>):null}
+        {accountInformation === false ? (
+          <div>
+            <div className={styles.horizontalBorder} />
+            <StakeHolderInformationForm
+              salutation={salutation}
+              roleDecisionMaking={roleDecisionMaking}
+              isIndividualSelected={isIndividualSelected}
+              onSubmit={handleSubmit}
+              saveStakeHolderInfo={(event) => saveStakeHolderInfo(event)}
+            />
+          </div>) : null}
         <div className={styles.horizontalBorder} />
         <h2 className={cn(textStyle, styles.heading)}>Payment Information</h2>
         <div className={styles.row}>
@@ -202,7 +209,7 @@ const DonorInformationForm = ({
             }
             name="sourceofpayment"
             options={sourceOfPayment.map((item) => {
-              return { label: item.Name, value: item.Id };
+              return { label: item.value, value: item.id };
             })}
             placeholder="Source of payment"
             validate={[required]}
@@ -224,7 +231,7 @@ const DonorInformationForm = ({
             }
             name="purpose"
             options={purposeList.map((item) => {
-              return { label: item.Name, value: item.id };
+              return { label: item.value, value: item.id };
             })}
             placeholder="Purpose"
             validate={[required]}
@@ -238,16 +245,16 @@ const DonorInformationForm = ({
             isSearchable={false}
             label={
               <p className={styles.label}>
-             Donor Preferred Location<span className={styles.required}>*</span>
+                Donor Preferred Location<span className={styles.required}>*</span>
               </p>
             }
             name="donorPreferredLocation"
             options={cityList.map((item) => {
-              return { label: item.name, value: item.id };
+              return { label: item.value, value: item.id };
             })}
             placeholder="Donor Location"
             validate={[required]}
-            onChange={(value)=>handlecenter(value)}
+            onChange={(value) => handlecenter(value)}
           >
             {InputDropdown}
           </Field>
@@ -258,7 +265,7 @@ const DonorInformationForm = ({
             isSearchable={false}
             label={
               <p className={styles.label}>
-            Centre<span className={styles.required}>*</span>
+                Centre<span className={styles.required}>*</span>
               </p>
             }
             name="center"
@@ -274,21 +281,21 @@ const DonorInformationForm = ({
 
         </div>
         <Field
-            aria-label="Comment/Remarks"
-            className={cn(styles.customText)}
-            component={InputWrapper}
-            label={
-              <p className={styles.label}>
-                Comment/Remarks<span className={styles.required}>*</span>
-              </p>
-            }
-            name="commentsRemarks"
-            placeholder="Comment/Remarks"
-            validate={[required]}
-          >
-            {InputText}
-          </Field>
-          <Field
+          aria-label="Comment/Remarks"
+          className={cn(styles.customText)}
+          component={InputWrapper}
+          label={
+            <p className={styles.label}>
+              Comment/Remarks<span className={styles.required}>*</span>
+            </p>
+          }
+          name="commentsRemarks"
+          placeholder="Comment/Remarks"
+          validate={[required]}
+        >
+          {InputText}
+        </Field>
+        <Field
           aria-label="Next Follow-up Date"
           className={cn(styles.customText)}
           component={InputWrapper}
@@ -306,6 +313,15 @@ const DonorInformationForm = ({
         </Field>
       </div>
       <div className={styles.nextButton}>
+        <div
+          className={styles.cancelBtn}
+          onClick={() => handleCancelBtn()}
+          onKeyPress={refresh}
+          role="button"
+          tabIndex="0"
+        >
+          Cancel
+        </div>
         <Button
           className={styles.next}
           disabled={submitting || loading}

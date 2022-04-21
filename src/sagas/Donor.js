@@ -1,10 +1,15 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getRequest, postRequest,putRequest,deleteRequest } from '../api/APICalls';
 import {getAllDonorsSuccess,saveDonorKindSuccess,getDonorByIdSuccess,updateDonorKindSuccess,
-        saveDonorSuccess,updateDonorSuccess, deleteDonorKindSuccess,deleteDonorSuccess} from '../actions/Donors';
+        saveDonorSuccess,updateDonorSuccess, deleteDonorKindSuccess,deleteDonorSuccess, getMasterDataSuccess,
+        saveStakeHolderSuccess,UpdateStakeHolderSuccess,deleteStakeHolderSuccess
+      } from '../actions/Donors';
 import * as constants from '../constants/Donors';
-import {saveProposalFamilyUnitSuccess,getProposalByDonorIdSuccess,updateProposalFamilyUnitSuccess,deleteProposalByIdSuccess} from '../actions/Proposal';
+import {saveProposalFamilyUnitSuccess,getProposalByDonorIdSuccess,updateProposalFamilyUnitSuccess,deleteProposalByIdSuccess,
+  saveProposalSuccess,getProposalsByDonorIdSuccess,updateProposalSuccess,deleteProposalsByIdSuccess,getBudgetProposalByProposalIdSuccess
+} from '../actions/Proposal';
 import { take } from 'lodash';
+import { updateSyncErrors } from 'redux-form';
 
 function* getAllDonorsSaga({ meta: { resolve, reject } }) {
   try {
@@ -86,6 +91,8 @@ function* deleteDonorSaga({ payload, meta: { resolve, reject } }) {
   }
 }
 
+//PROPOSAL FAMILY UNIT
+
 function* saveProposalFamilyUnitSaga({ payload, meta: { resolve, reject } }) {
 
   try {
@@ -121,12 +128,109 @@ function* updateProposalFamilyUnitSaga({ payload, meta: { resolve, reject } }) {
 function* deleteProposalFammilyUnitSaga({ payload, meta: { resolve, reject } }) {
   try {
     const res = yield call(deleteRequest, 'Proposal/deletefusById',payload);
-    yield put(deleteProposalByIdSuccess(res));
+    yield put(deleteProposalsByIdSuccess(res));
     yield call(resolve);
   } catch (error) {
     yield call(reject, error);
   }
 }
+
+//NON Family Unit 
+
+function* saveProposalsSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(postRequest, 'Proposal/addNonfus', payload);
+    yield put(saveProposalSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+function* getProposalsByIdSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(getRequest, 'Proposal/getNonfusByDonorId?donorId='+payload.donorId);
+    yield put(getProposalsByDonorIdSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+function* updateProposalsSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(putRequest, 'Proposal/updateNonfusById', payload);
+    yield put(updateProposalSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+
+function* deleteProposalsSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(deleteRequest, 'Proposal/deleteNonfusById',payload);
+    yield put(deleteProposalsByIdSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+function* getBudgetProposalByIdSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(getRequest, 'Proposal/getNonfusById?proposalId='+payload.proposalId);
+    yield put(getBudgetProposalByProposalIdSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+function* getMasterDataInfoSaga({meta:{resolve,reject}}){
+  try{
+    const res = yield call(getRequest, 'MasterData/all');
+    yield put(getMasterDataSuccess(res));
+    yield call(resolve);
+  }catch(error){
+    yield call(reject,error)
+  }
+}
+
+//StakeHolders 
+
+function* saveStakeHolderSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(postRequest, 'StakeHolder/add', payload);
+    yield put(saveStakeHolderSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+function* updateStakeHolderSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(putRequest, 'StakeHolder/update', payload);
+    yield put(UpdateStakeHolderSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
+
+function* deleteStakeHolderSaga({ payload, meta: { resolve, reject } }) {
+  try {
+    const res = yield call(deleteRequest, 'StakeHolder/delete',payload);
+    yield put(deleteStakeHolderSuccess(res));
+    yield call(resolve);
+  } catch (error) {
+    yield call(reject, error);
+  }
+}
+
 
 export default function* sagas() {
   yield takeLatest(constants.GET_ALL_DONORS_REQUEST, getAllDonorsSaga);
@@ -137,8 +241,23 @@ export default function* sagas() {
   yield takeLatest(constants.UPDATE_DONOR_REQUEST,updateDonorSaga);
   yield takeLatest(constants.DELETE_DONOR_KIND_REQUEST,deleteDonorKindSaga);
   yield takeLatest(constants.DELETE_DONOR_REQUEST,deleteDonorSaga);
+  //FAMILY Unit PROPOSAL
   yield takeLatest(constants.SAVE_PROPOSAL_FAMILY_UNIT_REQUEST,saveProposalFamilyUnitSaga);
   yield takeLatest(constants.GET_PROPOSAL_REQUEST,getProposalFamilyUnitByIdSaga);
   yield takeLatest(constants.UPDATE_PROPOSAL_FAMILY_UNIT_REQUEST,updateProposalFamilyUnitSaga);
   yield takeLatest(constants.DELETE_PROPOSAL_FAMILY_UNIT_REQUEST,deleteProposalFammilyUnitSaga);
+  //NON FAMILY UNIT PROPOSAL
+  yield takeLatest(constants.SAVE_PROPOSALS_REQUEST,saveProposalsSaga);
+  yield takeLatest(constants.GET_PROPOSALS_REQUEST,getProposalsByIdSaga);
+  yield takeLatest(constants.UPDATE_PROPOSALS_REQUEST,updateProposalsSaga);
+  yield takeLatest(constants.DELETE_PROPOSALS_REQUEST,deleteProposalsSaga);
+  yield takeLatest(constants.GET_PROPOSALS_BY_PROPOSALID_REQUEST,getBudgetProposalByIdSaga);
+
+  yield takeLatest(constants.GET_ALL_MASTER_DATA_INFO_REQUEST,getMasterDataInfoSaga);
+
+  //STAKE HOLDER
+  yield takeLatest(constants.SAVE_STAKE_HOLDER_REQUEST,saveStakeHolderSaga);
+  yield takeLatest(constants.UPDATE_STAKE_HOLDER_REQUEST,updateStakeHolderSaga);
+  yield takeLatest(constants.DELETE_STAKE_HOLDER_REQUEST,deleteStakeHolderSaga);
+
 }

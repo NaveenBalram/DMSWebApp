@@ -14,11 +14,102 @@ import Budget from '../../components/Budget/Budget';
 import FamilyUnitProposal from '../../components/FamilyUnitProposal/FamilyUnitProposal';
 import { SavedProposalCard } from '../../components/SavedProposalCard/SavedProposalCard';
 import { getDonorByIdRequest } from '../../actions/Donors';
-import { getProposalByDonorIdRequest, saveProposalFamilyUnitRequest, updateProposalFamilyUnitRequest, deleteProposalByIdRequest } from '../../actions/Proposal';
+import {
+    getProposalByDonorIdRequest, saveProposalFamilyUnitRequest, updateProposalFamilyUnitRequest, deleteProposalByIdRequest,
+    getProposalsByDonorIdRequest, saveProposalRequest, updateProposalRequest, deleteProposalsByIdRequest, getBudgetProposalByProposalIdRequest
+} from '../../actions/Proposal';
+import { parseInt } from 'lodash';
 
 
 
 
+const a = [
+    {
+        id: 0,
+        refNo: 1.1,
+        activityName: 'PERSONAL PROGRAM',
+        budgetAmount: 100000,
+
+    },
+    {
+        id: 1,
+        refNo: 1.2,
+        activityName: 'CENTRE RUNNING',
+        budgetAmount: 86000
+    },
+    {
+        id: 2,
+        refNo: 2.1,
+        activityName: 'CAPITAL COST',
+        budgetAmount: 200000
+    },
+    {
+        id: 3,
+        refNo: 3.1,
+        activityName: 'HYGIENIC STAY',
+        budgetAmount: 60000
+    },
+    {
+        id: 4,
+        refNo: 3.2,
+        activityName: 'NUTRITIOUS FOOD',
+        budgetAmount: 40000
+    },
+    {
+        id: 5,
+        refNo: 3.3,
+        activityName: 'TRANSPORTATION',
+        budgetAmount: 30000
+    },
+    {
+        id: 6,
+        refNo: 3.4,
+        activityName: 'MEDICAL ASSISTANCE',
+        budgetAmount: 50000
+    },
+    {
+        id: 7,
+        refNo: 3.5,
+        activityName: 'EMOTIONAL WELL-BEING',
+        budgetAmount: 30000
+    },
+    {
+        id: 8,
+        refNo: 3.6,
+        activityName: 'CELEBRATIONS AND RECREATIONS',
+        budgetAmount: 90000
+    },
+    {
+        id: 9,
+        refNo: 3.7,
+        activityName: 'SKILL TRAINING',
+        budgetAmount: 40000
+    },
+    {
+        id: 10,
+        refNo: 3.8,
+        activityName: 'EDUCATION ACTIVITIES FOR CHILDREN',
+        budgetAmount: 20000
+    },
+    {
+        id: 11,
+        refNo: 4.1,
+        activityName: 'OVERHEAD EXPENSES',
+        budgetAmount: 100000
+    },
+    {
+        id: 12,
+        refNo: 5.1,
+        activityName: 'MODEL CENTRES',
+        budgetAmount: 115000
+    },
+    {
+        id: 13,
+        refNo: '',
+        activityName: 'Total Budget',
+        budgetAmount: 912000
+    }
+];
 
 const CityList = [
     {
@@ -343,8 +434,10 @@ class DonorProposalPage extends Component {
             singage: false,
             cityList: [],
             donorProposalLists: [],
+            donorFinanceProposalists: [],
             accountInformation: false,
             propspectId: 0,
+            budgetTotal: 0,
         };
     }
 
@@ -354,11 +447,11 @@ class DonorProposalPage extends Component {
     componentDidMount() {
 
         this.initialDonorsCalls();
-        
+
     }
 
-     initialDonorsCalls() {
-        const { getDonorByIdRequest, getProposalByDonorIdRequest } = this.props;
+    initialDonorsCalls() {
+        const { getDonorByIdRequest, getProposalByDonorIdRequest, getProposalsByDonorIdRequest } = this.props;
         const donorId = localStorage.getItem('donorId');
         if (donorId !== null) {
             this.setState({ isInitialLoading: true });
@@ -375,7 +468,13 @@ class DonorProposalPage extends Component {
                 },
                 { reject, resolve }
             ));
-            Promise.all([res, res1]).then(() => this.handleInitialLoad());
+            const res2 = new Promise((resolve, reject) => getProposalsByDonorIdRequest(
+                {
+                    donorId: donorId
+                },
+                { reject, resolve }
+            ));
+            Promise.all([res, res1, res2]).then(() => this.handleInitialLoad());
             res.catch((error) => {
                 notify.show(
                     `An error occurred. ${error.response.data.Message}`,
@@ -387,13 +486,14 @@ class DonorProposalPage extends Component {
     }
 
     handleInitialLoad = () => {
-        const { donorInfo, change, donorProposalLists } = this.props;
+        const { donorInfo, change, donorProposalLists, donorFinanceProposalists } = this.props;
         sessionStorage.clear();
 
         this.setState({
             isInitialLoading: false,
             information: donorInfo,
-            donorProposalLists: donorProposalLists
+            donorProposalLists: donorProposalLists,
+            donorFinanceProposalists: donorFinanceProposalists
         });
         change(
             'FamilyUnitProposal',
@@ -411,6 +511,23 @@ class DonorProposalPage extends Component {
             'purpose',
             donorInfo ? purposeList.find(x => x.Name === donorInfo.purpose).id : null
         );
+        change(
+            'Budget',
+            'donorId',
+            donorInfo ? donorInfo.donorId : null
+        );
+        change(
+            'Budget',
+            'name',
+            donorInfo ? donorInfo.name : null
+        );
+
+        change(
+            'Budget',
+            'purpose',
+            donorInfo ? purposeList.find(x => x.Name === donorInfo.purpose).id : null
+        );
+
 
         this.setState({
             centerListState: centerList,
@@ -421,6 +538,8 @@ class DonorProposalPage extends Component {
 
     handleCancelBtn = () => {
 
+        sessionStorage.clear();
+
         this.setState({ isAddProposalEnabled: false },
             () => {
                 scroller.scrollTo('donorCard', {
@@ -429,7 +548,6 @@ class DonorProposalPage extends Component {
                     smooth: 'easeInOutQuart',
                 });
             });
-
     }
 
     handleDashboard = () => {
@@ -438,6 +556,37 @@ class DonorProposalPage extends Component {
     }
 
     handleEditSuccess = (value, information) => {
+        if (information.purpose === "Family Unit Sponsorship") {
+            this.handleEditFamilyUnitProposal(value, information);
+        } else {
+
+            this.getBudgetProposalById(value, information)
+        }
+    }
+
+    getBudgetProposalById = (value, information) => {
+        const { getBudgetProposalByProposalIdRequest } = this.props;
+
+        const res = new Promise((resolve, reject) =>
+            getBudgetProposalByProposalIdRequest(
+                {
+                    proposalId: information.id
+                },
+                { reject, resolve }
+            )
+        );
+        res.then(() => this.handleEditOthersProposals(value, information));
+        res.catch((error) => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+        })
+
+    }
+
+    handleEditFamilyUnitProposal = (value, information) => {
         const { donorInfo, change, donorProposalLists } = this.props;
 
         this.setState({ propspectId: information.id, proposalisNeedUpdate: true });
@@ -519,6 +668,97 @@ class DonorProposalPage extends Component {
 
     }
 
+    handleEditOthersProposals = (value, information) => {
+
+        const { donorInfo, change, donorProposalLists, budgetProposalInfo } = this.props;
+
+        this.setState({ propspectId: information.id, proposalisNeedUpdate: true });
+
+        change(
+            'Budget',
+            'donorId',
+            information ? information.donorProspectId : null
+        );
+        change(
+            'Budget',
+            'name',
+            information ? information.donorName : null
+        );
+
+        change(
+            'Budget',
+            'purpose',
+            information ? purposeList.find(x => x.Name === information.purpose).id : null
+        );
+
+        change(
+            'Budget',
+            'amount',
+            information ? information.amount : null
+        );
+        change(
+            'Budget',
+            'fromDate',
+            information ? moment(information.periodOfDonationFrom).format('MM/DD/YYYY') : null
+        );
+        change(
+            'Budget',
+            'toDate',
+            information ? moment(information.periodofDonationTo).format('MM/DD/YYYY') : null
+        );
+        change(
+            'Budget',
+            'frequency',
+            information ? information.frequencyOfNarrativeReport : null
+        );
+        change(
+            'Budget',
+            'Certificate',
+            information ? information.frequencyOfUtilizationCertificate : null
+        );
+        change(
+            'Budget',
+            'numberOfUnit',
+            information ? information.numberOfUnit : null
+        );
+
+        change(
+            'Budget',
+            'unit',
+            information ? information.numberOfUnit : null
+        );
+        change(
+            'Budget',
+            'location',
+            information ? information.locationId : null
+        );
+
+        change(
+            'Budget',
+            'center',
+            information ? information.centerId : null
+        );
+
+        budgetProposalInfo.listOfBudget.map((item, index) => {
+            change(
+                'Budget',
+                item.activityName, item ? item.activityName === 'Total Budget' ? this.setState({ budgetTotal: parseInt(item.centerAmount) }) : parseInt(item.centerAmount) : null
+            );
+            var indexx = index + 1;
+            sessionStorage.setItem(`index` + indexx + ``, item.centerAmount);
+        })
+
+
+        this.setState({ isAddProposalEnabled: true, singage: information.singage === true ? true : false, accountInformation: true },
+            () => {
+                scroller.scrollTo('donorCard', {
+                    delay: 100,
+                    duration: 500,
+                    smooth: 'easeInOutQuart',
+                });
+            });
+    }
+
 
     handleDeleteConfirm = information => {
         notify.show(
@@ -569,31 +809,55 @@ class DonorProposalPage extends Component {
         });
     }
 
+
+
     handleDeleteSuccess = information => {
-        const { deleteProposalByIdRequest } = this.props;
+        const { deleteProposalByIdRequest, deleteProposalsByIdRequest, donorInfo } = this.props;
         notify.hide();
-        const res1 = new Promise((resolve, reject) =>
-        deleteProposalByIdRequest(
-            {
-              "id": information.id
-            },
-            { reject, resolve })
-        );
-        res1.then(() => this.initialDonorsCalls())
-          .catch(error => {
-            if (error.response.status === 400) {
-              notify.show(`${error.response.data.message}`, 'error', 10000);
-            } else {
-              notify.show(` ${error}`, 'error', 5000);
-            }
-          });
-        
+     
+        if (donorInfo.purpose === "Family Unit Sponsorship") {
+            const res1 = new Promise((resolve, reject) =>
+                deleteProposalByIdRequest(
+                    {
+                        "id": information.id
+                    },
+                    { reject, resolve })
+            );
+            res1.then(() => this.initialDonorsCalls())
+                .catch(error => {
+                    if (error.response.status === 400) {
+                        notify.show(`${error.response.data.message}`, 'error', 10000);
+                    } else {
+                        notify.show(` ${error}`, 'error', 5000);
+                    }
+                });
+
+        } else {
+            const res1 = new Promise((resolve, reject) =>
+            deleteProposalsByIdRequest(
+                    {
+                        "id": information.id
+                    },
+                    { reject, resolve })
+            );
+            res1.then(() => this.initialDonorsCalls())
+                .catch(error => {
+                    if (error.response.status === 400) {
+                        notify.show(`${error.response.data.message}`, 'error', 10000);
+                    } else {
+                        notify.show(` ${error}`, 'error', 5000);
+                    }
+                });
+
+        }
+
+
 
     };
 
     handleUpdateSubmit = (values) => {
 
-        const { updateProposalFamilyUnitRequest,donorInfo } = this.props;
+        const { updateProposalFamilyUnitRequest, donorInfo } = this.props;
         const { propspectId } = this.state;
         var purposeLists = purposeList.find(x => x.id === values.purpose).Name;
         var numberOfUnits = units.find(x => x.id === values.unit).name;
@@ -648,14 +912,96 @@ class DonorProposalPage extends Component {
 
     }
 
+    handleUpdateProposalSubmit = (values) => {
+
+        const { updateProposalRequest, donorInfo } = this.props;
+        const { propspectId, budgetTotal } = this.state;
+        var purposeLists = purposeList.find(x => x.id === values.purpose).Name;
+        var numberOfUnits = units.find(x => x.id === values.unit).name;
+
+
+        var listOfBudget = new Array();
+        a.map(item => {
+            listOfBudget.push(
+                {
+                    "activityName": item.activityName,
+                    "centerAmount": parseInt(item.id === 13 ? budgetTotal : values[item.activityName]),
+                    "budgetAmount": parseInt(item.budgetAmount)
+                }
+            )
+        });
+
+        const res = new Promise((resolve, reject) =>
+            updateProposalRequest(
+                {
+                    "id": parseInt(propspectId),
+                    "donorId": parseInt(donorInfo.id),
+                    "donorProspectId": values.donorId,
+                    "donorName": values.name,
+                    "purpose": purposeLists,
+                    "locationId": values.location,
+                    "centerId": values.center,
+                    "numberOfUnit": values.numberOfUnit,
+                    "unit": numberOfUnits,
+                    "periodOfDonationFrom": moment(values.fromDate).format("yyyy-MM-DD"),
+                    "periodofDonationTo": moment(values.toDate).format("yyyy-MM-DD"),
+                    "amount": parseInt(values.amount),
+                    "frequencyOfNarrativeReport": values.frequency,
+                    "frequencyOfUtilizationCertificate": values.Certificate,
+                    "listOfBudget": listOfBudget
+                },
+                { reject, resolve }
+            )
+        );
+        res.then(() => this.handleSubmitSuccess());
+        res.catch(error => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+            if (error.response.status === 400) {
+                notify.show(
+                    `An error occurred. ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            } else {
+                notify.show(
+                    `An error occurred. Please try again. Technical Information: ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            }
+            this.setState({
+                isLoading: false,
+            });
+        });
+
+
+    }
+
     handleSubmit = (values) => {
+        const { donorInfo } = this.props;
         const { proposalisNeedUpdate } = this.state;
-        if (proposalisNeedUpdate === false) {
-            this.setState({ isLoading: true });
-            this.handleSave(values);
+
+        if (donorInfo.purpose === "Family Unit Sponsorship") {
+            if (proposalisNeedUpdate === false) {
+                this.setState({ isLoading: true });
+                this.handleSave(values);
+            } else {
+                this.handleUpdateSubmit(values);
+            }
         } else {
-            this.handleUpdateSubmit(values);
+            if (proposalisNeedUpdate === false) {
+                this.setState({ isLoading: true });
+                this.handleSaveProposals(values);
+            } else {
+                this.setState({ isLoading: true });
+                this.handleUpdateProposalSubmit(values);
+            }
         }
+
     }
 
     handleSave = (values) => {
@@ -710,9 +1056,80 @@ class DonorProposalPage extends Component {
         });
     }
 
+    handleSaveProposals = (values) => {
+
+        const { saveProposalRequest, donorInfo } = this.props;
+        const { budgetTotal } = this.state;
+        var purposeLists = purposeList.find(x => x.id === values.purpose).Name;
+        var numberOfUnits = units.find(x => x.id === values.unit).name;
+
+        var listOfBudget = new Array();
+        a.map(item => {
+            listOfBudget.push(
+                {
+                    "activityName": item.activityName,
+                    "centerAmount": parseInt(item.id === 13 ? budgetTotal : values[item.activityName]),
+                    "budgetAmount": parseInt(item.budgetAmount)
+                }
+            )
+        });
+
+
+        const res = new Promise((resolve, reject) =>
+            saveProposalRequest(
+                {
+
+                    "donorId": parseInt(donorInfo.id),
+                    "donorProspectId": values.donorId,
+                    "donorName": values.name,
+                    "purpose": purposeLists,
+                    "locationId": values.location,
+                    "centerId": values.center,
+                    "numberOfUnit": values.numberOfUnit,
+                    "unit": numberOfUnits,
+                    "singage": localStorage.getItem('isSignage') === "true" ? true : false,
+                    "periodOfDonationFrom": moment(values.fromDate).format("yyyy-MM-DD"),
+                    "periodofDonationTo": moment(values.toDate).format("yyyy-MM-DD"),
+                    "amount": parseInt(values.amount),
+                    "frequencyOfNarrativeReport": values.frequency,
+                    "frequencyOfUtilizationCertificate": values.Certificate,
+                    "listOfBudget": listOfBudget
+                },
+                { reject, resolve }
+            )
+        );
+        res.then(() => this.handleSubmitSuccess());
+        res.catch(error => {
+            notify.show(
+                `An error occurred. ${error.response.data.Message}`,
+                'error',
+                5000
+            );
+            if (error.response.status === 400) {
+                notify.show(
+                    `An error occurred. ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            } else {
+                notify.show(
+                    `An error occurred. Please try again. Technical Information: ${error.response.data.Message}`,
+                    'error',
+                    5000
+                );
+            }
+            this.setState({
+                isLoading: false,
+            });
+        });
+
+
+
+    }
+
     handleSubmitSuccess = () => {
-        this.setState({ isAddProposalEnabled: false },
-            this.initialDonorsCalls(),() => {
+        this.setState({ isAddProposalEnabled: false, accountInformation: false, isLoading: false, proposalisNeedUpdate: false },
+            this.initialDonorsCalls(), () => {
                 scroller.scrollTo('donorCard', {
                     delay: 100,
                     duration: 500,
@@ -720,10 +1137,11 @@ class DonorProposalPage extends Component {
                 });
             });
     }
-  
+
     handleAddProposal = () => {
         const { isAddProposalEnabled } = this.state;
-        this.setState({ isAddProposalEnabled: true },
+        this.handleInitialLoad();
+        this.setState({ isAddProposalEnabled: true, accountInformation: false },
             () => {
                 scroller.scrollTo('AddProposal', {
                     delay: 100,
@@ -731,6 +1149,11 @@ class DonorProposalPage extends Component {
                     smooth: 'easeInOutQuart',
                 });
             });
+    }
+
+    handleTotal = (amount) => {
+        sessionStorage.setItem('amount', parseInt(amount));
+        this.setState({ budgetTotal: parseInt(sessionStorage.getItem('amount')) });
     }
 
     render() {
@@ -742,10 +1165,12 @@ class DonorProposalPage extends Component {
             isAddProposalEnabled,
             singage,
             donorProposalLists,
-            accountInformation
+            donorFinanceProposalists,
+            accountInformation,
+            budgetTotal,
         } = this.state;
 
-        const { } = this.props;
+        const { donorInfo } = this.props;
         const { information } = this.state;
 
         // gaolLists.sort(function (a, b) { return a.GoalPriority - b.GoalPriority });
@@ -764,26 +1189,38 @@ class DonorProposalPage extends Component {
                             This page allows you to View, Add, and Edit your Proposals.
                         </div>
                         <h2 className={styles.textLight}>Saved Proposals</h2>
-                        {donorProposalLists.length === 0 ? (
+
+                        {donorProposalLists.length === 0 && donorFinanceProposalists.length === 0 ? (
                             <div className={styles.subContainer2}>
                                 <div className={styles.heroSubText}>
                                     No Proposal are found. Please create Proposals.
                                 </div>
                             </div>
-                        ) : (
-                            <div className={styles.subContainer2} name={'donorCard'}>
-                                {donorProposalLists.map((beneficiary, index) => (
-                                    <SavedProposalCard
-                                        key={`SD_${index}`}
-                                        handleDeleteSuccess={this.handleDeleteConfirm}
-                                        handleEditSuccess={this.handleEditSuccess}
-                                        information={beneficiary}
-                                        centerList={centerList}
-                                        cityList={CityList}
-                                    />
-                                ))}
-                            </div>
+                        ) : (donorInfo.purpose === "Family Unit Sponsorship" ? (<div className={styles.subContainer2} name={'donorCard'}>
+                            {donorProposalLists.map((beneficiary, index) => (
+                                <SavedProposalCard
+                                    key={`SD_${index}`}
+                                    handleDeleteSuccess={this.handleDeleteConfirm}
+                                    handleEditSuccess={this.handleEditSuccess}
+                                    information={beneficiary}
+                                    centerList={centerList}
+                                    cityList={CityList}
+                                />
+                            ))}
+                        </div>) : (<div className={styles.subContainer2} name={'donorCard'}>
+                            {donorFinanceProposalists.map((beneficiary, index) => (
+                                <SavedProposalCard
+                                    key={`SD_${index}`}
+                                    handleDeleteSuccess={this.handleDeleteConfirm}
+                                    handleEditSuccess={this.handleEditSuccess}
+                                    information={beneficiary}
+                                    centerList={centerList}
+                                    cityList={CityList}
+                                />
+                            ))}
+                        </div>)
                         )}
+
                         {/* <div className={styles.scrollOverlayContainer}>
                             <div className={styles.scrollOverlay}>
                                 <h5 className={styles.textScroll}>
@@ -816,6 +1253,14 @@ class DonorProposalPage extends Component {
                                         donorId={information.donorId}
                                         donorName={information.name}
                                         handleCSISuccess={() => this.handleCSISuccess()}
+                                        handlecenter={(value) => this.handlecenter(value)}
+                                        units={units}
+                                        numberOfUnit={numberOfUnit}
+                                        handleCancelBtn={() => this.handleCancelBtn()}
+                                        accountInformation={accountInformation}
+                                        loading={isLoading}
+                                        budgetTotal={budgetTotal}   //{parseInt(sessionStorage.getItem('amount'))}
+                                        handleTotal={(value) => this.handleTotal(value)}
                                     />
                                 ) :
                                 (isAddProposalEnabled === true ? (<FamilyUnitProposal
@@ -851,8 +1296,6 @@ class DonorProposalPage extends Component {
     }
 }
 
-
-
 DonorProposalPage.propTypes = {
     change: PropTypes.func.isRequired,
     history: PropTypes.shape({
@@ -868,7 +1311,12 @@ DonorProposalPage.propTypes = {
     getDonorByIdRequest: PropTypes.func.isRequired,
     isDonorCreated: PropTypes.bool.isRequired,
     saveProposalFamilyUnitRequest: PropTypes.func.isRequired,
-    getProposalByDonorIdRequest: PropTypes.func.isRequired
+    getProposalByDonorIdRequest: PropTypes.func.isRequired,
+    getProposalsByDonorIdRequest: PropTypes.func.isRequired,
+    saveProposalRequest: PropTypes.func.isRequired,
+    updateProposalRequest: PropTypes.func.isRequired,
+    deleteProposalsByIdRequest: PropTypes.func.isRequired
+
 };
 
 DonorProposalPage.defaultProps = {
@@ -878,7 +1326,9 @@ const mapStateToProps = state => ({
     donorStakeHolders: state.donor.donorStakeHolders,
     donorInfo: state.donor.donorInfo.data,
     isDonorCreated: state.header.isDonorCreated,
-    donorProposalLists: state.donor.donorProposalLists.data
+    donorProposalLists: state.donor.donorProposalLists.data,
+    donorFinanceProposalists: state.donor.donorFinanceProposalists.data,
+    budgetProposalInfo: state.donor.budgetProposalInfo.data
 });
 
 const mapDispatchToProps = {
@@ -888,7 +1338,12 @@ const mapDispatchToProps = {
     getDonorByIdRequest,
     getProposalByDonorIdRequest,
     updateProposalFamilyUnitRequest,
-    deleteProposalByIdRequest
+    deleteProposalByIdRequest,
+    getProposalsByDonorIdRequest,
+    saveProposalRequest,
+    getBudgetProposalByProposalIdRequest,
+    updateProposalRequest,
+    deleteProposalsByIdRequest
 
 };
 

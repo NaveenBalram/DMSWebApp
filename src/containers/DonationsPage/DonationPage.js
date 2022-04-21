@@ -12,36 +12,36 @@ import { setAuthStatus, setUserName } from '../../actions/Header';
 import SignUpForm from '../../components/SignUpForm/SignUpForm';
 import Spinner from '../../components/Spinner/Spinner';
 import styles from './DonationPage.module.scss';
-import { saveDonorKindRequest, getDonorByIdRequest, updateDonorKindRequest } from '../../actions/Donors';
+import { saveDonorKindRequest, getDonorByIdRequest, updateDonorKindRequest,getMasterDataRequest } from '../../actions/Donors';
 import DonorProfilePage from '../DonorProfilePage/DonorProfilePage';
 
 
-const donationReceived = [
-  {
-    id: 1,
-    name: 'AMC Charges'
-  },
-  {
-    id: 2,
-    name: 'Books & Periodicals'
-  },
-  {
-    id: 3,
-    name: 'Laptop'
-  },
-  {
-    id: 4,
-    name: 'Computer'
-  },
-  {
-    id: 5,
-    name: 'Office Equipment'
-  },
-  {
-    id: 5,
-    name: 'Medicine'
-  }
-];
+// const donationReceived = [
+//   {
+//     id: 1,
+//     name: 'AMC Charges'
+//   },
+//   {
+//     id: 2,
+//     name: 'Books & Periodicals'
+//   },
+//   {
+//     id: 3,
+//     name: 'Laptop'
+//   },
+//   {
+//     id: 4,
+//     name: 'Computer'
+//   },
+//   {
+//     id: 5,
+//     name: 'Office Equipment'
+//   },
+//   {
+//     id: 5,
+//     name: 'Medicine'
+//   }
+// ];
 
 class DonationPage extends Component {
   constructor(props) {
@@ -53,19 +53,23 @@ class DonationPage extends Component {
       information: {},
       phoneTypes: [],
       states: [],
-      isUpdated: false
+      isUpdated: false,
+      donationReceived: []
     };
   }
 
   componentDidMount() {
-    const { getDonorByIdRequest } = this.props;
-    const donorKindId = sessionStorage.getItem('donorKindId');
 
+    const { getDonorByIdRequest,masterDataLists } = this.props;
+    const donorKindId = sessionStorage.getItem('donorKindId');
+    this.initialAPICall();
+  
     if (donorKindId !== null) {
       this.setState({
         isUpdated: true,
         isInitialLoading: true,
       });
+     
       const res = new Promise((resolve, reject) =>
         getDonorByIdRequest(
           {
@@ -86,6 +90,30 @@ class DonationPage extends Component {
     }
   }
 
+  initialAPICall() {
+    const { getMasterDataRequest } = this.props;
+    this.setState({ isLoading: true })
+    const res = new Promise((resolve, reject) => getMasterDataRequest(
+        { reject, resolve }
+    ));
+    res.then(() => this.handleMasterData());
+    res.catch((error) => {
+        notify.show(
+            `An error occurred. ${error.response.data.Message}`,
+            'error',
+            5000
+        );
+    })
+}
+handleMasterData() {
+  const { masterDataLists } = this.props;
+  this.setState({ 
+         isLoading:false,
+         donationReceived:masterDataLists.donationReceived
+      });
+
+    }
+
   handleInitialLoad = () => {
     const { donorInfo } = this.props;
     sessionStorage.removeItem('donorKindId');
@@ -99,7 +127,7 @@ class DonationPage extends Component {
 
   handleCSISuccess = value => {
     const { change } = this.props;
-    const { information } = this.state;
+    const { information,donationReceived} = this.state;
     change(
       'signUp',
       'firstName',
@@ -128,7 +156,7 @@ class DonationPage extends Component {
     change(
       'signUp',
       'donationRecieved',
-      information ? donationReceived.find(x => x.name === information.donationReceived).id : null
+      information ? donationReceived.find(x => x.value === information.donationReceived).id : null
     );
     change(
       'signUp',
@@ -148,7 +176,7 @@ class DonationPage extends Component {
 
   handleSaveSubmit = values => {
     const { saveDonorKindRequest, history } = this.props;
-    const { isUpdated } = this.state;
+    const { isUpdated,donationReceived } = this.state;
     this.setState({
       isLoading: true,
     });
@@ -161,7 +189,7 @@ class DonationPage extends Component {
           "contactNo": values.phoneNumber,
           "email": values.email,
           "address": values.addressLine1,
-          "donationReceived": donationReceived.find(x => x.id === values.donationRecieved).name,
+          "donationReceived": donationReceived.find(x => x.id === values.donationRecieved).value,
           "quantity": values.quantity,
           "description": values.description
         },
@@ -196,7 +224,7 @@ class DonationPage extends Component {
 
   handleUpdateSubmit = values => {
     const { updateDonorKindRequest, history } = this.props;
-    const { isUpdated, information } = this.state;
+    const { isUpdated, information,donationReceived } = this.state;
     this.setState({
       isLoading: true,
     });
@@ -211,7 +239,7 @@ class DonationPage extends Component {
           "contactNo": values.phoneNumber,
           "email": values.email,
           "address": values.addressLine1,
-          "donationReceived": donationReceived.find(x => x.id === values.donationRecieved).name,
+          "donationReceived": donationReceived.find(x => x.id === values.donationRecieved).value,
           "quantity": values.quantity,
           "description": values.description
         },
@@ -263,12 +291,17 @@ class DonationPage extends Component {
     const {
       isLoading,
       isInitialLoading,
-      isUpdated
+      isUpdated,
+      donationReceived
     } = this.state;
+
     // const isInitialLoading = false;
-    const { highContrast } = this.props;
+
+    const { highContrast,masterDataLists } = this.props;
     const containerStyle = highContrast ? styles.darkContainer : null;
 
+    //this.setState({donationReceived:masterDataLists.donationReceived})
+  
     return (
       <div className={cn(styles.container, containerStyle)}>
         <Helmet>
@@ -340,7 +373,8 @@ DonationPage.propTypes = {
   saveDonorKindRequest: PropTypes.func.isRequired,
   donorsInformation: PropTypes.arrayOf(PropTypes.shape({})),
   getDonorByIdRequest: PropTypes.func.isRequired,
-  updateDonorKindRequest: PropTypes.func.isRequired
+  updateDonorKindRequest: PropTypes.func.isRequired,
+  getMasterDataRequest:PropTypes.func.isRequired
 };
 
 DonationPage.defaultProps = {
@@ -351,7 +385,8 @@ DonationPage.defaultProps = {
 const mapStateToProps = state => ({
   highContrast: state.header.highContrast,
   donorsInformation: state.donor.donorsInformation.data,
-  donorInfo: state.donor.donorInfo
+  donorInfo: state.donor.donorInfo,
+  masterDataLists: state.donor.masterDataLists
 });
 
 const mapDispatchToProps = {
@@ -360,7 +395,8 @@ const mapDispatchToProps = {
   setUserName,
   saveDonorKindRequest,
   getDonorByIdRequest,
-  updateDonorKindRequest
+  updateDonorKindRequest,
+  getMasterDataRequest
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DonationPage);

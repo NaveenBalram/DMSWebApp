@@ -50,7 +50,7 @@ const SignUpForm = ({
       </h2>
 
       <div className={styles.container}>
-        <h2 className={cn(textStyle, styles.heading)}>Donaor Details</h2>
+        <h2 className={cn(textStyle, styles.heading)}>Donor Details</h2>
         
           <Field
             aria-label="first name"
@@ -145,7 +145,7 @@ const SignUpForm = ({
             }
             name="donationRecieved"
             options={donationTypes.map((item) => {
-              return { label: item.name, value: item.id };
+              return { label: item.value, value: item.id };
             })}
             placeholder="Donation Type"
             validate={[required]}

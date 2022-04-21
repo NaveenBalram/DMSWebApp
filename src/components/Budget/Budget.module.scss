@@ -15,6 +15,14 @@
     border-radius: 4px;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin:20px;
+  }
+
 .headerBox {
     display: flex;
     flex-direction: row;
@@ -39,7 +47,7 @@
     background-color: white;
     color: #585858;
     font-weight: bold;
-    width: 1125px;
+    width: 1130px;
     align-items: flex-end;
     justify-content: space-between;
     border-top: 2px solid rgba(0, 0, 255, 0.06);
@@ -47,8 +55,9 @@
 
 .refColumn {
     display: flex;
-    flex: 1;
-    line-height: 30px;
+    flex: 1;    
+    align-self: center;
+    //line-height: 100px;
 }
 
 .refRow {
@@ -57,45 +66,51 @@
     flex-direction: row;
     align-self: flex-start;
     justify-content: space-between;
-    line-height: 30px;
+   
+    // line-height: 100px;
 }
 
 .refIcon {
     font-size: medium;
     font-weight: 350;
+    align-self: center;
 }
 
 .activityColumn {
     display: flex;
-    flex: 4.5;
-    line-height: 25px;
+    flex: 1.5;
+    align-self: center;
+    //line-height: 100px;
 }
 .centerAmountColumn {
     display: flex;
     flex: 1.25;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-self: flex-start;
-    line-height: 25px;
+   // line-height: 100px;
 }
 
 .centerAmountTextBoxColumn {
-    width: 140px;
-    height: 35px;
-    border: 1.5px solid rgba(0, 0, 255, 0.25);
+    width: auto;
+    height: auto;
+    align-self: center;
+   // border: 1.5px solid rgba(0, 0, 255, 0.25);
 }
 
 .budgetAmountColumn {
     display: flex;
     flex: 1;
-    justify-content: flex-start;
-    line-height: 25px;
+    justify-content: flex-end;
+    align-self: center;
+    //line-height: 100px;
 }
 
 .budgetAmountRow {
     display: flex;
     flex: 1;
     justify-content: flex-end;
-    line-height: 25px;
+    align-self: center;
+    //line-height: 100px;
 }
 
 .gap {
@@ -177,3 +192,95 @@
         background-color: #016936;
     }
 }
+
+.horizontalBorder {
+    height: 2px;
+    background-color: $color-primary;
+  }
+.hideBudget{
+    display:flex;
+    align-self: center;
+    align-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: $color-primary;
+    height: 40px;
+    font-size: $font-size-large;
+}
+
+.arrowcontainer {
+    position: relative;
+    bottom: 0;
+    right: 25px;
+    width: 30px;
+    height: 30px;
+    animation: bounce 2s ease-in-out infinite ;
+    margin:5px;
+
+  }
+
+
+
+  .arrowline {
+    left: 31px;
+    position:absolute;
+    width: 15px;
+    border: 4px solid $color-primary;
+    border-radius: 15px;
+    transform: rotate(45deg);
+  }
+
+  .arrowline2{
+      left:20px;
+    position:absolute;
+    width: 15px;
+    border: 4px solid $color-primary;
+    border-radius: 15px;
+    transform: rotate(-45deg);
+  }
+
+  .arrowline3 {
+    left: 31px;
+    position:absolute;
+    width: 15px;
+    border: 4px solid $color-primary;
+    border-radius: 15px;
+    transform: rotate(-45deg);
+  }
+
+  .arrowline4{
+      left:20px;
+    position:absolute;
+    width: 15px;
+    border: 4px solid $color-primary;
+    border-radius: 15px;
+    transform: rotate(45deg);
+  }
+
+  @keyframes bounce {
+      0%   {bottom: -20px;}
+      50%  {bottom: 0px;}
+      100% {bottom: -20px;}
+  }
+
+  .cancelBtn {
+    font-size: 22px;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top:-11px;
+    text-align: left;
+  }
+  
+  .nextButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    align-content: center;
+    align-self: center;
+    align-content: center;
+    flex-wrap: nowrap;
+  }

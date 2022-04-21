@@ -28,7 +28,6 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  margin:10px;
 }
 
 @media (max-width: $breakpoint-smaller) {
@@ -68,16 +67,32 @@ align-content: center;
 
 .nextButton {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  justify-content:space-between;
+  width:100%;
+  // align-items: center;
+  // flex-direction: column;
   //margin-left:50%;
   
 }
 
+.cancelBtn {
+  font-size: 22px;
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top:11px;
+  text-align: left;
+  &:hover {
+    transition-duration: 500ms;
+    color: #f58220!important;
+    font-size: 26px;
+  }
+}
+
+
 .next {
   margin: 15px 0 30px 0;
-  width: 250px;
+  width: 300px;
 
 }
 
@@ -134,26 +149,4 @@ align-content: center;
   margin-left: 12px;
   font-weight: 500;
   color: $color-primary;
-}
-
-.cancelBtn {
-  font-size: 22px;
-  text-align: center;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top:-11px;
-  text-align: left;
-}
-
-.nextButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin: auto;
-  align-content: center;
-  align-self: center;
-  align-content: center;
-  flex-wrap: nowrap;
 }
